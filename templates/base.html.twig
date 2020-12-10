@@ -11,9 +11,40 @@
 			<link rel="stylesheet" href="https://bootswatch.com/4/cyborg/bootstrap.min.css"></head>
 	</html>
 </link>
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>{% endblock %}</head><body>{% include "partials/_navbar.html.twig" %}<div class="container"> {% block body %}{% endblock %}
-</div>
-{% block javascripts %}
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-{% endblock %}</body></html>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>{% endblock %}</head><body>{% include "partials/_navbar.html.twig" %}<div class="container">
+{% block body %}
+	{# 
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
+		#}
+{% endblock %}</div>{% block javascripts %}
+{% if app.user %}
+	<script>
+		document.getElementById('inscription').style.display = 'none';
+	</script>
+	<script>
+		document.getElementById('connexion').style.display = 'none';
+	</script>
+	<script>
+		document.getElementById('deconnexion').style.display = 'block';
+	</script>
+	{#  <script>document.getElementById('admin').style.display ='none';</script> #}
+{% else %}
+	<script>
+		document.getElementById('inscription').style.display = 'block';
+	</script>
+	<script>
+		document.getElementById('connexion').style.display = 'block';
+	</script>
+	<script>
+		document.getElementById('deconnexion').style.display = 'none';
+	</script>
+	{#  <script>document.getElementById('admin').style.display ='none';</script> #}
+
+	{#  <script>document.getElementById('espace_membre').style.display ='none';</script> #}
+
+
+{% endif %}{% endblock %}</body></html>

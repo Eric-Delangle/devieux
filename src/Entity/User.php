@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -31,10 +32,17 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="8", minMessage="Votre mot de passe doit contenir au minimum huit caractères")
+     * @Assert\EqualTo(propertyPath="password_verify", message="Vos mots de passe ne sont pas identiques")
      */
     private $password;
+
+    /**
+     *  @Assert\EqualTo(propertyPath="password", message="Vos mots de passe ne sont pas identiques")
+     * @var string|null
+     */
+    public $password_verify;
 
     /**
      * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="users")
@@ -64,6 +72,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
     }
 
     public function getId(): ?int

@@ -33,10 +33,19 @@
 		</ul>
 		<ul class="navbar-nav mr-auto">
 			<li lass="nav-item">
-				<a class="nav-link" href="#">Inscription</a>
+				<a class="nav-link" id="inscription" href="{{ path('security_registration') }}" tabindex="-1" aria-disabled="true">
+					<i class="fas fa-door-open black"></i>
+					Inscription</a>
 			</li>
 			<li lass="nav-item">
-				<a class="nav-link" href="#">Connexion</a>
+				<a class="nav-link" id="connexion" href="{{ path('security_login') }}" tabindex="-1" aria-disabled="true">
+					<i class="fas fa-sign-in-alt black"></i>
+					Connexion</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="deconnexion" href="{{ path('security_logout') }}" tabindex="-1" aria-disabled="true">
+					<i class="fas fa-sign-out-alt black"></i>
+					Déconnexion</a>
 			</li>
 		</ul>
 		<form class="form-inline my-2 my-lg-0">

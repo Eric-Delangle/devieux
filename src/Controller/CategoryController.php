@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/{slug}", name="category_index")
+     * @Route("/category/{slug}", name="category_index")
      */
     public function index($slug, CategoryRepository $catRepo): Response
     {
@@ -24,6 +24,7 @@ class CategoryController extends AbstractController
         if (!$category) {
             throw $this->createNotFoundException("La catégorie demandée n'existe pas");
         }
+
         return $this->render('category/category.html.twig', [
             'slug' => $slug,
             'category' => $category
