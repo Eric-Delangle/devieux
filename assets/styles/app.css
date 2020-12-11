@@ -1,7 +1,19 @@
+/* Couleur des liens de la navbar */
 .nav-link {
   color: #ffffff !important;
 }
 
+/* Couleur des liens de la navbar au survol */
 .nav-link:hover {
   color: #000000 !important;
+}
+
+/* Couleur de fond de la span qui affiche les catégories de l'utilisateur */
+.catColor {
+  width: 30px;
+  height: auto;
+  background-color: rgb(199, 109, 50);
+  color: #ffffff;
+  padding: 5px 5px;
+  border-radius: 10px;
 }

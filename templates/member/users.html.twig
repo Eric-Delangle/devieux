@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les membres
+{% endblock %}
+
+{% block body %}
+	{% for user in users %}
+	
+		<p>{{ user.email }}</p>
+	{% endfor %}
+{% endblock %}

@@ -15,12 +15,19 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
     main:
+      form_login:
+        login_path: security_login
+        check_path: security_login
+        username_parameter: login[email]
+        password_parameter: login[password]
+        default_target_path: member_space
+
       anonymous: true
       lazy: true
       provider: app_user_provider
-      guard:
-        authenticators:
-          - App\Security\LoginAuthenticator
+      #guard:
+      #authenticators:
+      #- App\Security\LoginAuthenticator
       logout:
         path: security_logout
         # where to redirect after logout

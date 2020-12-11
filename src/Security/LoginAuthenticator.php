@@ -93,7 +93,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
 
-        return new RedirectResponse('/');
+        return new RedirectResponse('/member/space');
     }
 
     protected function getLoginUrl()

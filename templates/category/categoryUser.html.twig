@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ slug }}
+{% endblock %}
+
+{% block body %}
+
+{% for item in user %}
+    <h2 class="text-center mt-3"> Vous visitez le profil de {{ item.firstName | capitalize }}
+    {{ item.lastName | capitalize }}
+    </h2>
+    <p class="text-center mt-3">
+    Ses technologies : {% for categorie in item.categories %}
+		 {% if loop.first != true %}
+        ,
+        {% endif %}
+		<span class="catColor">
+			  {{ categorie.name }}
+			  </span>
+		{% endfor %}
+    </p>
+    <p class="text-center">Il vit à {{ item.location | capitalize }}</p>
+{% endfor %}
+
+    
+{% endblock %}

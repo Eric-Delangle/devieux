@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -49,7 +50,7 @@ class SecurityController extends AbstractController
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Votre compte a bien été créé');
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('security_login');
         }
         // }
 
@@ -63,12 +64,17 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $utils)
     {
-        $form = $this->createForm(LoginType::class, ['email' => $utils->getLastUsername()]);
 
-        return $this->render('security/login.html.twig', [
-            'formView' => $form->createView(),
-            'error' => $utils->getLastAuthenticationError()
-        ]);
+        //$form = $factory->createNamed("", LoginType::class, ['email' => $utils->getLastUsername()]);
+        $form = $this->createForm(LoginType::class, ['email' => $utils->getLastUsername()]);
+        dump($form);
+        return $this->render(
+            'security/login.html.twig',
+            [
+                'formView' => $form->createView(),
+                'error' => $utils->getLastAuthenticationError(),
+            ],
+        );
     }
 
     /**
