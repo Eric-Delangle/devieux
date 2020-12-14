@@ -3,32 +3,44 @@
 	{{ slug }}
 {% endblock %}
 {% block body %}
+
 	<h2 class="text-center mt-5">
 		Vous êtes dans la catégorie :
-		<span class="catColor">{{ category.name }}</span></h2>
-	{% for user in category.users %}
-		<table class="table table-hover mt-5">
-			<thead>
-				<tr class="table-primary">
-					<th scope="col">Prénom</th>
-					<th scope="col">Nom</th>
-					<th scope="col">Ville</th>
-					<th scope="col"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="table-active">
-					<td>{{ user.firstName | capitalize }}</td>
-					<td>{{ user.lastName | capitalize}}</td>
-					<td>{{ user.location | capitalize }}</td>
-					<td>
-						<a href="{{ path('category_showUser', {'slug': user.slug}) }}"><button type="button" class="btn btn-primary btn-sm">Profil</button></a>
-					</td>
-				</tr>
+		<span class="catColor">{{ slug | capitalize}}</span>
+	</h2>
+	{% for item in category.items %}
+		{% for user in item.users %}
+			<table class="table table-hover mt-5">
+				<thead>
+					<tr class="table-primary">
+						<th scope="col">Prénom</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Ville</th>
+						<th scope="col">Avatar</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="table-active">
+						<td>{{ user.firstName | capitalize }}</td>
+						<td>{{ user.lastName | capitalize}}</td>
+						<td>{{ user.location | capitalize }}</td>
+						<td><img class="imageRondCat" src="{{ vich_uploader_asset(user, 'avatarFile') | imagine_filter ('thumb') }}"/></td>
+						<td>
+							<a href="{{ path('category_showUser', {'slug': user.slug}) }}">
+								<button type="button" class="btn btn-primary btn-sm">Profil</button>
+							</a>
+						</td>
+					</tr>
 
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		{% endfor %}
+		<div class="pagination">
 
+			{{ knp_pagination_render (category)}}
+		</div>
 	{% endfor %}
+
 
 {% endblock %}

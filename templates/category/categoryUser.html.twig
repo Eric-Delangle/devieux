@@ -1,27 +1,89 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-    {{ slug }}
+	Profil de
+	{{ slug }}
 {% endblock %}
 
 {% block body %}
 
-{% for item in user %}
-    <h2 class="text-center mt-3"> Vous visitez le profil de {{ item.firstName | capitalize }}
-    {{ item.lastName | capitalize }}
-    </h2>
-    <p class="text-center mt-3">
-    Ses technologies : {% for categorie in item.categories %}
-		 {% if loop.first != true %}
-        ,
-        {% endif %}
-		<span class="catColor">
-			  {{ categorie.name }}
-			  </span>
-		{% endfor %}
-    </p>
-    <p class="text-center">Il vit à {{ item.location | capitalize }}</p>
-{% endfor %}
+	{% for item in user %}
+		<h2 class="text-center mt-3">
+			Vous visitez le profil de
+			{{ item.firstName | capitalize }}
+			{{ item.lastName | capitalize }}
+		</h2>
 
-    
+		<p class="text-center mt-5"><img class="imageRond" src="{{ vich_uploader_asset(item, 'avatarFile') | imagine_filter ('thumb') }}"/></p>
+		<p class="text-center mt-5">Ses technologies :
+			{% for categorie in item.categories %}
+				{% if loop.first != true %}
+					,
+				{% endif %}
+				<span class="catColor">
+					{{ categorie.name }}</span>
+			{% endfor %}
+		</p>
+		<p class="text-center">Il vit à
+			{{ item.location | capitalize }}</p>
+		<p class="text-center">
+			<span class="titreColor">Présentation</span>
+			:
+			{{ item.description }}</p>
+		<p class="text-center">
+			<span class="titreColor">Experience</span>
+			:
+			{{ item.experience }}
+			ans</p>
+
+		<p class="text-center mt-5">
+			<button type="button" class="btn btn-danger btn-sm" onclick="rtn()">Le contacter</button>
+		</p>
+
+		<p class="text-center mt-5">
+			<button type="button" class="btn btn-primary btn-sm" onclick="rtn()">Retour à la liste</button>
+		</p>
+	{% endfor %}
+
+
+{% endblock %}
+{% block javascripts %}
+
+
+	{% if app.user %}
+		<script>
+			document.getElementById('inscription').style.display = 'none';
+		</script>
+		<script>
+			document.getElementById('connexion').style.display = 'none';
+		</script>
+		<script>
+			document.getElementById('deconnexion').style.display = 'block';
+		</script>
+		<script>
+			document.getElementById('espace_membre').style.display = 'block';
+		</script>
+	{% else %}
+		<script>
+			document.getElementById('inscription').style.display = 'block';
+		</script>
+		<script>
+			document.getElementById('connexion').style.display = 'block';
+		</script>
+		<script>
+			document.getElementById('deconnexion').style.display = 'none';
+		</script>
+		<script>
+			document.getElementById('espace_membre').style.display = 'none';
+		</script>
+
+
+	{% endif %}
+
+
+	<script>
+		function rtn() {
+window.history.back();
+}
+	</script>
 {% endblock %}

@@ -1,31 +1,58 @@
 {% extends "base.html.twig" %}
 {% block title %}
+	Votre espace
 	{{ app.user.slug }}
 {% endblock %}
 
 {% block body %}
-	
-			<h2 class="mt-3 text-center">
+
+	<h2 class="mt-3 text-center">
 		Bienvenue dans votre espace
 		{{ app.user.firstName | capitalize}}
 		{{ app.user.lastName | capitalize }}
-		</h2>
-		
-		<p class="text-center mt-5">Vous habitez {{ app.user.location | capitalize }}.
-		<button type="button" class="btn btn-primary btn-sm">Modifier</button>
-		<p class="text-center">
+	</h2>
+	<div class="text-center">
+		<img class="imageRond" src="{{ vich_uploader_asset(app.user, 'avatarFile') | imagine_filter ('thumb') }}"/>
+
+	</div>
+
+
+	<p class="text-center mt-5">Vous habitez
+		{{ app.user.location | capitalize }}.
+		<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
+			<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+		</a>
+	</p>
+	<p class="text-center">
 		Vous êtes inscrit(e) dans les catégories suivantes :
 		{% for categorie in app.user.categories %}
-		 {% if loop.first != true %}
-        ,
-        {% endif %}
-		<span class="catColor">
-			  {{ categorie.name }}
-			  </span>
+			{% if loop.first != true %}
+				,
+			{% endif %}
+			<span class="catColor">
+				{{ categorie.name }}
+			</span>
 		{% endfor %}
 		.
-		<button type="button" class="btn btn-primary btn-sm">Mettre à jour</button>
-</p>
+		<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
+			<button type="button" class="btn btn-primary btn-sm">Mettre à jour</button>
+		</a>
 	</p>
-	
-{% endblock %}
+</p>
+<p class="text-center mt-5">
+	<span class="titreColor">Votre présentation</span>
+	:
+	{{ app.user.description }}
+	<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
+		<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+	</a>
+</p>
+<p class="text-center mt-5">
+	<span class="titreColor">Vos années d'experience</span>
+	:
+	{{ app.user.experience }}
+	ans
+	<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
+		<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+	</a>
+</p>{% endblock %}

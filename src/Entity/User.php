@@ -2,15 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @Vich\Uploadable()
+ * @UniqueEntity(fields="email")
  */
 class User implements UserInterface
 {
@@ -68,6 +76,41 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $experience;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mainAvatar;
+
+    /**
+     * @Vich\UploadableField(mapping="user_images", fileNameProperty="mainAvatar")
+     * @Assert\File(
+     * maxSize="1000k",
+     * maxSizeMessage="Le fichier excède 1000Ko.",
+     * mimeTypes={"image/jpeg", "image/jpg", "image/gif"},
+     * mimeTypesMessage= "formats autorisés: png, jpeg, jpg, gif"
+     * )
+     * @var File|null
+     */
+    private $avatarFile;
+
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $registeredAt;
+
+
 
     public function __construct()
     {
@@ -223,5 +266,81 @@ class User implements UserInterface
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getExperience(): ?int
+    {
+        return $this->experience;
+    }
+
+    public function setExperience(int $experience): self
+    {
+        $this->experience = $experience;
+
+        return $this;
+    }
+
+    public function getMainAvatar(): ?string
+    {
+        return $this->mainAvatar;
+    }
+
+    public function setMainAvatar(string $mainAvatar): self
+    {
+        $this->mainAvatar = $mainAvatar;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getAvatarFile(): ?File
+    {
+
+        return $this->avatarFile;
+    }
+
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $AvatarFile
+     *  @return User
+     */
+    public function setAvatarFile(?File $avatarFile): User
+    {
+        $this->avatarFile = $avatarFile;
+        if ($this->avatarFile instanceof UploadedFile) {
+            $this->updated_at = new \DateTime('now');
+        }
+
+        return $this;
+    }
+
+    public function getRegisteredAt(): ?\DateTimeInterface
+    {
+        return $this->registeredAt;
+    }
+
+    public function setRegisteredAt(\DateTimeInterface $registeredAt): self
+    {
+        $this->registeredAt = $registeredAt;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getSlug();
     }
 }

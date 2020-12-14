@@ -12,13 +12,19 @@
 				</a>
 			</li>
 			<li class="nav-item">
+				<a class="nav-link" href="#">A propos</a>
+			</li>
+			<li class="nav-item">
 				<a class="nav-link" href="{{ path('category_index', {'slug': 'javascript' }) }}">Développeurs(euses) Javascript</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="{{ path('category_index', {'slug': 'php' }) }}">Développeurs(euses) PHP</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">A propos</a>
+				<a class="nav-link" href="{{ path('category_index', {'slug': 'python' }) }}">Développeurs(euses) Python</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('category_index', {'slug': 'ruby' }) }}">Développeurs(euses) Ruby</a>
 			</li>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Les frameworks</a>
@@ -26,9 +32,7 @@
 					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'react' }) }}">React</a>
 					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'symfony' }) }}">Symfony</a>
 					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'laravel' }) }}">Laravel</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Separated link</a>
-				</div>
+				</li>
 			</li>
 		</ul>
 		<ul class="navbar-nav mr-auto">

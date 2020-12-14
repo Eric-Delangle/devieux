@@ -11,24 +11,18 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class UserType extends AbstractType
+class User1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('email')
-            ->add('password')
             ->add('firstName')
             ->add('lastName')
             ->add('location')
             ->add('description')
             ->add('experience')
-            ->add('categories', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-                'multiple' => 'true',
-                'expanded' => true
-            ])
+            ->add('mainAvatar')
             ->add('avatarFile', VichFileType::class, [
                 'required' => false,
                 'label' => 'Votre avatar',
@@ -44,6 +38,12 @@ class UserType extends AbstractType
                     'required' => false,
 
                 ]
+            ])
+            ->add('categories', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'multiple' => 'true',
+                'expanded' => true
             ]);
     }
 

@@ -47,6 +47,7 @@ class SecurityController extends AbstractController
             $slug = $slugify->slugify($user->getFirstName() . ' ' . $user->getLastName());
             $user->setSlug($slug);
             $user->getCategories(new Category());
+            $user->setRegisteredAt(new \DateTime());
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Votre compte a bien été créé');

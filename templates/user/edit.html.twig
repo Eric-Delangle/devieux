@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition du profil
+{% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block body %}
+	<h2 class="text-center mt-3">Edition de votre profil
+		{{ user.firstName | capitalize }}
+	</h2>
+	<div class="text-center p-3">
+		{{ include('user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+
+		<a href="{{ path('member_space') }}">
+			<button class="btn btn-warning btn-sm mt-3">Retour à votre espace</button>
+		</a>
+
+
+		{{ include('user/_delete_form.html.twig') }}
+	</div>
+
+{% endblock %}

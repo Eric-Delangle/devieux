@@ -17,3 +17,36 @@
   padding: 5px 5px;
   border-radius: 10px;
 }
+
+/* Couleur de fond de la span qui affiche les titres de presentation de l'utilisateur */
+.titreColor {
+  width: 30px;
+  height: auto;
+  background-color: rgb(199, 109, 50);
+  color: #ffffff;
+  padding: 5px 5px;
+  border-radius: 10px;
+}
+
+/* forme ronde pour l'affichage des avatars des espaces membre*/
+
+.imageRond {
+  border-radius: 50%;
+}
+
+/* forme ronde pour l'affichage des avatars des listes des utilisateurs selon la catégorie*/
+
+.imageRondCat {
+  width: 50px;
+  height: auto;
+  border-radius: 50%;
+}
+
+/* bouton telecharger un avatar */
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+  content: "Browse" !important;
+}
+
+.custom-file-input:lang(fr) ~ .custom-file-label::after {
+  content: "Choisir" !important;
+}

@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Repository\UserRepository;
 use App\Repository\CategoryRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,22 +16,9 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/{slug}", name="category_index")
      */
-    public function index($slug, CategoryRepository $catRepo): Response
+    public function index($slug, CategoryRepository $catRepo, PaginatorInterface $paginator, Request $request, Category $category): Response
     {
-        /* pour paginer 
-        return $this->render('gallery/category.html.twig',[ 
-            'artisticwork' => $artisticrepo->findBySlug('slug'),
-            
-             'galleries' => $paginator->paginate(
-              $galleryRepository->findBy(['category' => $category]),
-              $request->query->getInt('page' , 1 ),
-              4),
-              'category' =>$category,
-             
-            ]);
-
-
-*/
+        /*
         $category = $catRepo->findOneBy([
             'slug' => $slug,
         ]);
@@ -40,7 +30,31 @@ class CategoryController extends AbstractController
 
         return $this->render('category/category.html.twig', [
             'slug' => $slug,
-            'category' => $category
+            'category' => $paginator->paginate(
+                $catRepo->findVisibleQuery(),
+                $request->query->getInt('page', 1),
+                4
+            )
+
+        ]);
+        */
+
+        $category = $catRepo->findOneBy([
+            'slug' => $slug,
+        ]);
+
+
+        if (!$category) {
+            throw $this->createNotFoundException("La catégorie demandée n'existe pas");
+        }
+
+        return $this->render('category/category.html.twig', [
+            'slug' => $slug,
+            'category' => $paginator->paginate(
+                $catRepo->findBy(['slug' => $slug]),
+                $request->query->getInt('page', 1),
+                4
+            )
 
         ]);
     }

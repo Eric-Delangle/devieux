@@ -52,7 +52,8 @@ class MemberController extends AbstractController
     /**
      * Affiche un membre en particulier
      * @Route("/member/{slug}", name="member_show")
-     */
+     **/
+    /*
     public function show($slug)
     {
 
@@ -63,4 +64,5 @@ class MemberController extends AbstractController
             'slug' => $slug
         ]);
     }
+    */
 }
