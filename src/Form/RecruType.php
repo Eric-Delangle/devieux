@@ -2,16 +2,14 @@
 
 namespace App\Form;
 
-use App\Entity\User;
-use App\Entity\Category;
+use App\Entity\Recruter;
 use Symfony\Component\Form\AbstractType;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class User1Type extends AbstractType
+class RecruType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -19,13 +17,7 @@ class User1Type extends AbstractType
             ->add('email')
             ->add('firstName')
             ->add('lastName')
-            ->add('location')
-            ->add('description')
-            ->add('experience')
-            ->add('avatarFile', VichFileType::class, [
-                'required' => false,
-                'label' => 'Votre avatar',
-            ])
+            ->add('company')
             ->add('password', PasswordType::class, [
                 'attr' => [
                     'required' => false,
@@ -38,18 +30,17 @@ class User1Type extends AbstractType
 
                 ]
             ])
-            ->add('categories', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-                'multiple' => 'true',
-                'expanded' => true
-            ]);
+            ->add('avatarFile', VichFileType::class, [
+                'required' => false,
+                'label' => 'Votre avatar',
+            ])
+            ->add('location');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Recruter::class,
             'translation_domain' => 'forms'
         ]);
     }

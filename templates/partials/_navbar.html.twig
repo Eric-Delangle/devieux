@@ -7,13 +7,11 @@
 	<div class="collapse navbar-collapse" id="navbarColor01">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="#">Concept
+				<a class="nav-link" href="{{ path('concept') }}">Concept
 
 				</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">A propos</a>
-			</li>
+
 			<li class="nav-item">
 				<a class="nav-link" href="{{ path('category_index', {'slug': 'javascript' }) }}">Développeurs(euses) Javascript</a>
 			</li>
@@ -37,7 +35,7 @@
 		</ul>
 		<ul class="navbar-nav mr-auto">
 			<li lass="nav-item">
-				<a class="nav-link" id="inscription" href="{{ path('security_registration') }}" tabindex="-1" aria-disabled="true">
+				<a class="nav-link" id="inscription" href="{{ path('home_register_choice') }}" tabindex="-1" aria-disabled="true">
 					<i class="fas fa-door-open black"></i>
 					Inscription</a>
 			</li>

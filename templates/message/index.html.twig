@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-center mt-5">Vos messages</h1>
+
+	<table class="table mt-5">
+		<thead>
+			<tr>
+				<th>Expéditeur</th>
+				<th>Titre</th>
+				<th>Message</th>
+				<th>Reçu le</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for message in messages %}
+				{% if message.userExpediteur %}
+					<tr>
+						<td>{{ message.userExpediteur.firstName | capitalize }}
+							{{ message.userExpediteur.lastName | capitalize }}</td>
+						<td>{{ message.titre }}</td>
+						<td>{{ message.message }}</td>
+						<td>{{ message.postedAt ? message.postedAt|date('Y-m-d H:i:s') : '' }}</td>
+						<td>
+							<a href="{{ path('message_show', {'id': message.id}) }}">Lire</a>
+							{# 	<a href="{{ path('message_edit', {'id': message.id}) }}">edit</a> #}
+						</td>
+					</tr>
+
+				{% endif %}
+				{% if message.recruterExpediteur %}
+					<tr>
+						<td>{{ message.recruterExpediteur.firstName | capitalize }}
+							{{ message.recruterExpediteur.lastName | capitalize }}</td>
+						<td>{{ message.titre }}</td>
+						<td>{{ message.message }}</td>
+						<td>{{ message.postedAt ? message.postedAt|date('Y-m-d H:i:s') : '' }}</td>
+						<td>
+							<a href="{{ path('message_show', {'id': message.id}) }}">Lire</a>
+
+						</td>
+					</tr>
+
+				{% endif %}
+			{% else %}
+				<tr>
+					<td colspan="5">Pas de message reçu.</td>
+				</tr>
+			{% endfor %}
+			{% for reponse in reponses %}
+				{% if reponse.expediteur %}
+					<tr>
+
+
+						<td>{{ reponse.message }}</td>
+						<td>{{ reponse.postedAt ? reponse.postedAt|date('Y-m-d H:i:s') : '' }}</td>
+						<td>
+							<a href="{{ path('reponse_show', {'id': reponse.id}) }}">Lire</a>
+
+						</td>
+					</tr>
+
+				{% endif %}
+
+			{% else %}
+				<tr>
+					<td colspan="5">Pas de message reçu.</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+{% endblock %}

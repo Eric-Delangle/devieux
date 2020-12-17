@@ -1,7 +1,10 @@
 {% extends "base.html.twig" %}
 {% block title %}
+
 	Votre espace
 	{{ app.user.slug }}
+
+
 {% endblock %}
 
 {% block body %}
@@ -11,7 +14,7 @@
 		{{ app.user.firstName | capitalize}}
 		{{ app.user.lastName | capitalize }}
 	</h2>
-	<div class="text-center">
+	<div class="text-center mt-3">
 		<img class="imageRond" src="{{ vich_uploader_asset(app.user, 'avatarFile') | imagine_filter ('thumb') }}"/>
 
 	</div>
@@ -23,36 +26,65 @@
 			<button type="button" class="btn btn-primary btn-sm">Modifier</button>
 		</a>
 	</p>
-	<p class="text-center">
-		Vous êtes inscrit(e) dans les catégories suivantes :
-		{% for categorie in app.user.categories %}
-			{% if loop.first != true %}
-				,
-			{% endif %}
-			<span class="catColor">
-				{{ categorie.name }}
-			</span>
-		{% endfor %}
-		.
-		<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-			<button type="button" class="btn btn-primary btn-sm">Mettre à jour</button>
-		</a>
-	</p>
-</p>
-<p class="text-center mt-5">
-	<span class="titreColor">Votre présentation</span>
-	:
-	{{ app.user.description }}
-	<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-		<button type="button" class="btn btn-primary btn-sm">Modifier</button>
-	</a>
-</p>
-<p class="text-center mt-5">
-	<span class="titreColor">Vos années d'experience</span>
-	:
-	{{ app.user.experience }}
-	ans
-	<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-		<button type="button" class="btn btn-primary btn-sm">Modifier</button>
-	</a>
-</p>{% endblock %}
+	{% if app.user.categories is defined %}
+
+		<p class="text-center mt-5">
+			Vous êtes inscrit(e) dans les catégories suivantes :
+			{% for categorie in app.user.categories %}
+				{% if loop.first != true %}
+					,
+				{% endif %}
+				<span class="catColor">
+					{{ categorie.name }}
+				</span>
+			{% endfor %}
+			.
+			<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
+				<button type="button" class="btn btn-primary btn-sm">Mettre à jour</button>
+			</a>
+		</p>
+
+
+	{% endif %}
+
+
+	{% if app.user.description is defined %}
+
+		<p class="text-center mt-5">
+			<span class="titreColor">Votre présentation</span>
+			:
+			{{ app.user.description }}
+			<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
+				<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+			</a>
+		</p>
+	{% endif %}
+
+	{% if app.user.experience is defined %}
+		<p class="text-center mt-5">
+			<span class="titreColor">Vos années d'experience</span>
+			:
+			{{ app.user.experience }}
+			ans
+			<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
+				<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+			</a>
+		</p>
+	{% endif %}
+
+	{% if app.user.company is defined %}
+		<p class="text-center mt-5">
+			<span class="titreColor">Entreprise</span>
+			:
+			{{ app.user.company }}
+
+			<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
+				<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+			</a>
+		</p>
+	{% endif %}
+
+	<a href="{{ path('message_index', {'id': app.user.id}) }}" class="btn btn-info">
+		Messagerie</a>
+
+{% endblock %}

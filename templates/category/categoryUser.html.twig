@@ -37,7 +37,9 @@
 			ans</p>
 
 		<p class="text-center mt-5">
-			<button type="button" class="btn btn-danger btn-sm" onclick="rtn()">Le contacter</button>
+			<a href="{{ path('message_new', {'id': item.id, 'slug': item.slug}) }}">
+				<button id="contact" type="button" class="btn btn-danger btn-sm">Le contacter</button>
+			</a>
 		</p>
 
 		<p class="text-center mt-5">
@@ -63,6 +65,9 @@
 		<script>
 			document.getElementById('espace_membre').style.display = 'block';
 		</script>
+		<script>
+			document.getElementById('contact').style.display = 'block';
+		</script>
 	{% else %}
 		<script>
 			document.getElementById('inscription').style.display = 'block';
@@ -76,7 +81,9 @@
 		<script>
 			document.getElementById('espace_membre').style.display = 'none';
 		</script>
-
+		<script>
+			document.getElementById('contact').style.display = 'none';
+		</script>
 
 	{% endif %}
 

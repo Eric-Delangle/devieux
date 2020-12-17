@@ -19,4 +19,12 @@ class HomeController extends AbstractController
 
         return $this->render('home/home.html.twig');
     }
+
+    /**
+     * @Route("/inscription", name="home_register_choice")
+     */
+    public function registerChoice()
+    {
+        return $this->render('home/choice.html.twig');
+    }
 }

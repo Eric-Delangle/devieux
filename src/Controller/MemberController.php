@@ -42,10 +42,10 @@ class MemberController extends AbstractController
     public function space()
     {
 
-        // $user = $this->manager->getRepository(User::class)->findOneBy(['email' => $user]);
+        // $user = $this->manager->getRepository(User::class)->findOneBy(['slug' => $slug]);
 
         return $this->render('member/space.html.twig', [
-            // 'user' => $user
+            //  'user' => $user
         ]);
     }
 

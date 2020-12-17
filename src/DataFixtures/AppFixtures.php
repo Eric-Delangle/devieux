@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use Faker;
 use App\Entity\User;
 use App\Entity\Category;
+use App\Entity\Recruter;
 use Cocur\Slugify\Slugify;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -66,7 +67,31 @@ class AppFixtures extends Fixture
             }
             $users[] = $user;
             $manager->persist($user);
+        };
+
+        for ($r = 1; $r <= 15; $r++) {
+
+            $recruter = new Recruter();
+
+            $hash = $this->encoder->encodePassword($recruter, "password");
+
+            $recruter->setFirstName($faker->firstNameMale())
+                ->setLastName($faker->lastName())
+                ->setEmail("email+" . $r . "@email.com");
+            $slug = $slugify->slugify($user->getFirstName() . ' ' . $user->getLastName());
+            $recruter->setSlug($slug)
+                ->setLocation($faker->city())
+                ->setPassword($hash)
+                ->setRoles(["ROLE_RECRUTER"])
+                ->setCompany($faker->company())
+                ->setMainAvatar('avatarDefaut.jpg') // la je donne le nom de l'avatar
+                ->setAvatarFile(new File('public/images/avatarDefaut.jpg')) // la son fichier
+                ->setRegisteredAt($faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now'));
+
+
+            $manager->persist($recruter);
         }
+
 
 
 

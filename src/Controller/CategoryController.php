@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Category;
 use App\Repository\UserRepository;
 use App\Repository\CategoryRepository;
@@ -18,26 +19,6 @@ class CategoryController extends AbstractController
      */
     public function index($slug, CategoryRepository $catRepo, PaginatorInterface $paginator, Request $request, Category $category): Response
     {
-        /*
-        $category = $catRepo->findOneBy([
-            'slug' => $slug,
-        ]);
-
-
-        if (!$category) {
-            throw $this->createNotFoundException("La catégorie demandée n'existe pas");
-        }
-
-        return $this->render('category/category.html.twig', [
-            'slug' => $slug,
-            'category' => $paginator->paginate(
-                $catRepo->findVisibleQuery(),
-                $request->query->getInt('page', 1),
-                4
-            )
-
-        ]);
-        */
 
         $category = $catRepo->findOneBy([
             'slug' => $slug,
@@ -48,13 +29,18 @@ class CategoryController extends AbstractController
             throw $this->createNotFoundException("La catégorie demandée n'existe pas");
         }
 
+
+        $liste = $category->getUsers();/* ce sont ces elements que je veux paginer */
+
         return $this->render('category/category.html.twig', [
             'slug' => $slug,
             'category' => $paginator->paginate(
-                $catRepo->findBy(['slug' => $slug]),
+                $liste,/* ce sont ces elements que je veux paginer */
+
                 $request->query->getInt('page', 1),
                 4
             )
+
 
         ]);
     }

@@ -2,14 +2,19 @@ security:
   encoders:
     App\Entity\User:
       algorithm: auto
+    App\Entity\Recruter:
+      algorithm: auto
 
-  # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
   providers:
-    # used to reload user from session & other features (e.g. switch_user)
     app_user_provider:
-      entity:
-        class: App\Entity\User
-        property: email
+      entity: { class: App\Entity\User, property: email }
+    app_recruter_provider:
+      entity: { class: App\Entity\Recruter, property: email }
+
+    all_users:
+      chain:
+        providers: ["app_user_provider", "app_recruter_provider"]
+
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -24,7 +29,7 @@ security:
 
       anonymous: true
       lazy: true
-      provider: app_user_provider
+      provider: all_users
       #guard:
       #authenticators:
       #- App\Security\LoginAuthenticator
@@ -42,5 +47,5 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    # - { path: ^/admin, roles: ROLE_ADMIN }
-    # - { path: ^/profile, roles: ROLE_USER }
+    #- { path: ^/, roles: ROLE_RECRUTER }
+    #- { path: ^/, roles: ROLE_USER }

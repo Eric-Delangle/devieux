@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message
+{% endblock %}
+
+{% block body %}
+	<h1>Message</h1>
+	{% if message.userExpediteur %}
+
+		<table class="table">
+			<tbody>
+				<tr>
+					<th>Expéditeur</th>
+					<td>{{ message.userExpediteur.firstName | capitalize }}
+						{{ message.userExpediteur.lastName | capitalize }}</td>
+				</tr>
+				<tr>
+					<th>Titre</th>
+					<td>{{ message.titre | capitalize }}</td>
+				</tr>
+				<tr>
+					<th>Message</th>
+					<td>{{ message.message | capitalize }}</td>
+				</tr>
+				<tr>
+					<th>Reçu le</th>
+					<td>{{ message.postedAt ? message.postedAt|date('Y-m-d H:i:s') : '' }}</td>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<a href="{{ path('message_index') }}">Retour à vos messages</a>
+		<br>
+		<a href="{{ path('message_reponse', {'id': message.userExpediteur.id}) }}">Répondre
+		</a>
+
+		{{ include('message/_delete_form.html.twig') }}
+	{% endif %}
+	{% if message.recruterExpediteur %}
+
+		<table class="table">
+			<tbody>
+				<tr>
+					<th>Expéditeur</th>
+					<td>{{ message.recruterExpediteur.firstName | capitalize }}
+						{{ message.recruterExpediteur.lastName | capitalize }}</td>
+				</tr>
+				<tr>
+					<th>Titre</th>
+					<td>{{ message.titre | capitalize }}</td>
+				</tr>
+				<tr>
+					<th>Message</th>
+					<td>{{ message.message | capitalize }}</td>
+				</tr>
+				<tr>
+					<th>Reçu le</th>
+					<td>{{ message.postedAt ? message.postedAt|date('Y-m-d H:i:s') : '' }}</td>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<a href="{{ path('message_index') }}">Retour à vos messages</a>
+		<br>
+		<a href="{{ path('message_reponse', {'id': message.recruterExpediteur.id}) }}">Répondre</a>
+
+		{{ include('message/_delete_form.html.twig') }}
+	{% endif %}
+{% endblock %}

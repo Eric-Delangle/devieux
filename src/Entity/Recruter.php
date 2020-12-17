@@ -2,26 +2,24 @@
 
 namespace App\Entity;
 
-
-use DateTimeInterface;
-use App\Entity\Recruter;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Form\Type\VichFileType;
+use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RecruterRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\RecruterRepository")
  * @Vich\Uploadable()
  * @UniqueEntity(fields="email")
  */
-class User implements UserInterface
+class Recruter implements UserInterface
 {
     /**
      * @ORM\Id
@@ -40,6 +38,7 @@ class User implements UserInterface
      */
     private $roles = [];
 
+
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min="8", minMessage="Votre mot de passe doit contenir au minimum huit caractères")
@@ -53,10 +52,6 @@ class User implements UserInterface
      */
     public $password_verify;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="users")
-     */
-    private $categories;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -79,16 +74,6 @@ class User implements UserInterface
     private $slug;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $experience;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $mainAvatar;
@@ -105,6 +90,10 @@ class User implements UserInterface
      */
     private $avatarFile;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $company;
 
     /**
      * @ORM\Column(type="datetime")
@@ -112,22 +101,22 @@ class User implements UserInterface
     private $registeredAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="destinataire")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recruterExpediteur")
      */
     private $messages;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recruterDestinataire")
+     */
+    private $messages_recruter;
 
 
 
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
-        $this->roles = ['ROLE_USER'];
-
-        $this->conversationsUser = new ArrayCollection();
         $this->messages = new ArrayCollection();
-        $this->messages_user = new ArrayCollection();
+        $this->messages_recruter = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -208,30 +197,6 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection|Category[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        $this->categories->removeElement($category);
-
-        return $this;
-    }
-
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -280,30 +245,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getExperience(): ?int
-    {
-        return $this->experience;
-    }
-
-    public function setExperience(int $experience): self
-    {
-        $this->experience = $experience;
-
-        return $this;
-    }
-
     public function getMainAvatar(): ?string
     {
         return $this->mainAvatar;
@@ -329,7 +270,7 @@ class User implements UserInterface
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $AvatarFile
      *  @return User
      */
-    public function setAvatarFile(?File $avatarFile): User
+    public function setAvatarFile(?File $avatarFile)
     {
         $this->avatarFile = $avatarFile;
         if ($this->avatarFile instanceof UploadedFile) {
@@ -351,9 +292,16 @@ class User implements UserInterface
         return $this;
     }
 
-    public function __toString()
+    public function getCompany(): ?string
     {
-        return (string) $this->getSlug();
+        return $this->company;
+    }
+
+    public function setCompany(string $company): self
+    {
+        $this->company = $company;
+
+        return $this;
     }
 
     /**
@@ -368,7 +316,7 @@ class User implements UserInterface
     {
         if (!$this->messages->contains($message)) {
             $this->messages[] = $message;
-            $message->setUserExpediteur($this);
+            $message->setRecruterExpediteur($this);
         }
 
         return $this;
@@ -378,41 +326,44 @@ class User implements UserInterface
     {
         if ($this->messages->removeElement($message)) {
             // set the owning side to null (unless already changed)
-            if ($message->getUserExpediteur() === $this) {
-                $message->setUserExpediteur(null);
+            if ($message->getRecruterExpediteur() === $this) {
+                $message->setRecruterExpediteur(null);
             }
         }
 
         return $this;
     }
+
 
     /**
      * @return Collection|Message[]
      */
-    public function getMessagesUser(): Collection
+    /*
+    public function getMessagesRecruter(): Collection
     {
-        return $this->messages_user;
+        return $this->messages_recruter;
     }
 
-    public function addMessagesUser(Message $messagesUser): self
+    public function addMessagesRecruter(Message $messagesRecruter): self
     {
-        if (!$this->messages_user->contains($messagesUser)) {
-            $this->messages_user[] = $messagesUser;
-            $messagesUser->setUserDestinataire($this);
+        if (!$this->messages_recruter->contains($messagesRecruter)) {
+            $this->messages_recruter[] = $messagesRecruter;
+            $messagesRecruter->setRecruterDestinataire($this);
         }
 
         return $this;
     }
 
-    public function removeMessagesUser(Message $messagesUser): self
+    public function removeMessagesRecruter(Message $messagesRecruter): self
     {
-        if ($this->messages_user->removeElement($messagesUser)) {
+        if ($this->messages_recruter->removeElement($messagesRecruter)) {
             // set the owning side to null (unless already changed)
-            if ($messagesUser->getUserDestinataire() === $this) {
-                $messagesUser->setUserDestinataire(null);
+            if ($messagesRecruter->getRecruterDestinataire() === $this) {
+                $messagesRecruter->setRecruterDestinataire(null);
             }
         }
 
         return $this;
     }
+    */
 }

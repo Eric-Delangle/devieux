@@ -50,3 +50,13 @@
 .custom-file-input:lang(fr) ~ .custom-file-label::after {
   content: "Choisir" !important;
 }
+
+/* liens de la page choix de création de compte */
+
+.choix {
+  color: #ffffff !important;
+}
+
+.choix:hover {
+  color: #2a9fd6 !important;
+}
