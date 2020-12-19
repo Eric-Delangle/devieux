@@ -18,21 +18,24 @@ class Message
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messagesRecu_user")
      */
     private $userExpediteur;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Recruter::class, inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages_user")
+     */
+    private $userDestinataire;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Recruter::class, inversedBy="messagesRecu_recruter")
      */
     private $recruterExpediteur;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity=Recruter::class, inversedBy="messages_recruter")
      */
-    private $destinataire;
-
-
+    private $recruterDestinataire;
 
 
     /**
@@ -127,6 +130,46 @@ class Message
     public function setPostedAt(\DateTimeInterface $postedAt): self
     {
         $this->postedAt = $postedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of recruterDestinataire
+     */
+    public function getRecruterDestinataire()
+    {
+        return $this->recruterDestinataire;
+    }
+
+    /**
+     * Set the value of recruterDestinataire
+     *
+     * @return  self
+     */
+    public function setRecruterDestinataire($recruterDestinataire)
+    {
+        $this->recruterDestinataire = $recruterDestinataire;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userDestinataire
+     */
+    public function getUserDestinataire()
+    {
+        return $this->userDestinataire;
+    }
+
+    /**
+     * Set the value of userDestinataire
+     *
+     * @return  self
+     */
+    public function setUserDestinataire($userDestinataire)
+    {
+        $this->userDestinataire = $userDestinataire;
 
         return $this;
     }

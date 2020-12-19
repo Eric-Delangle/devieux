@@ -112,12 +112,21 @@ class User implements UserInterface
     private $registeredAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="destinataire")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recruterExpediteur")
      */
-    private $messages;
+    private $messagesRecu_recruter;
 
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="userExpediteur")
+     */
+    private $messagesRecu_user;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="userDestinataire")
+     */
+    private $messages_user;
 
 
     public function __construct()
@@ -125,9 +134,10 @@ class User implements UserInterface
         $this->categories = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
 
-        $this->conversationsUser = new ArrayCollection();
+
         $this->messages = new ArrayCollection();
-        $this->messages_user = new ArrayCollection();
+        $this->messagesRecu_user = new ArrayCollection();
+        $this->messagesRecu_recruter = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -389,27 +399,57 @@ class User implements UserInterface
     /**
      * @return Collection|Message[]
      */
-    public function getMessagesUser(): Collection
+    public function getMessagesRecuUser(): Collection
     {
         return $this->messages_user;
     }
 
-    public function addMessagesUser(Message $messagesUser): self
+    public function addMessagesRecuUser(Message $messagesRecuUser): self
     {
-        if (!$this->messages_user->contains($messagesUser)) {
-            $this->messages_user[] = $messagesUser;
-            $messagesUser->setUserDestinataire($this);
+        if (!$this->messagesRecu_user->contains($messagesRecuUser)) {
+            $this->messagesRecu_user[] = $messagesRecuUser;
+            $messagesRecuUser->setUserDestinataire($this);
         }
 
         return $this;
     }
 
-    public function removeMessagesUser(Message $messagesUser): self
+    public function removeMessagesRecuUser(Message $messagesRecuUser): self
     {
-        if ($this->messages_user->removeElement($messagesUser)) {
+        if ($this->messagesRecu_user->removeElement($messagesRecuUser)) {
             // set the owning side to null (unless already changed)
-            if ($messagesUser->getUserDestinataire() === $this) {
-                $messagesUser->setUserDestinataire(null);
+            if ($messagesRecuUser->getUserDestinataire() === $this) {
+                $messagesRecuUser->setUserDestinataire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessagesRecuRecruter(): Collection
+    {
+        return $this->messages_recruter;
+    }
+
+    public function addMessagesRecuRecruter(Message $messagesRecuRecruter): self
+    {
+        if (!$this->messagesRecu_recruter->contains($messagesRecuRecruter)) {
+            $this->messagesRecu_recruter[] = $messagesRecuRecruter;
+            $messagesRecuRecruter->setUserDestinataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessagesRecuRecruter(Message $messagesRecuRecruter): self
+    {
+        if ($this->messagesRecu_recruter->removeElement($messagesRecuRecruter)) {
+            // set the owning side to null (unless already changed)
+            if ($messagesRecuRecruter->getUserDestinataire() === $this) {
+                $messagesRecuRecruter->setUserDestinataire(null);
             }
         }
 

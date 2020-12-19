@@ -103,7 +103,7 @@ class Recruter implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recruterExpediteur")
      */
-    private $messages;
+    private $messagesRecu_recruter;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recruterDestinataire")
@@ -111,6 +111,10 @@ class Recruter implements UserInterface
     private $messages_recruter;
 
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="userDestinataire")
+     */
+    private $messages_user;
 
 
     public function __construct()
@@ -366,4 +370,44 @@ class Recruter implements UserInterface
         return $this;
     }
     */
+
+    /**
+     * Get the value of messages_recruter
+     */
+    public function getMessagesRecu_recruter()
+    {
+        return $this->messagesRecu_recruter;
+    }
+
+    /**
+     * Set the value of messages_recruter
+     *
+     * @return  self
+     */
+    public function setMessagesRecu_recruter($messagesRecu_recruter)
+    {
+        $this->messagesRecu_recruter = $messagesRecu_recruter;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of messages_user
+     */
+    public function getMessages_user()
+    {
+        return $this->messages_user;
+    }
+
+    /**
+     * Set the value of messages_user
+     *
+     * @return  self
+     */
+    public function setMessages_user($messages_user)
+    {
+        $this->messages_user = $messages_user;
+
+        return $this;
+    }
 }
