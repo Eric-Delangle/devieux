@@ -29,61 +29,72 @@ class MessageController extends AbstractController
     /**
      * @Route("/", name="message_index", methods={"GET"})
      */
-    public function index(MessageRepository $messageRepository, ReponseRepository $reponseRepository, UserRepository $useRepo): Response
+    public function index(MessageRepository $messageRepo, ReponseRepository $reponseRepo, UserRepository $useRepo): Response
     {
 
         $user = $this->getUser();
 
         $role = $user->getRoles();
 
-
         if ($role[0] == "ROLE_USER") {
-            $messages = $messageRepository->findBy(['userDestinataire' => $user]); // liste des messages envoyés par un user
-            dump($messages); // me renvoit un tableau de plusieurs messages
 
-            //Pour chaque message je dois récuperer les données qui concernent l'expediteur
+            $messages = $messageRepo->findBy(['userDestinataire' => $user]); // liste des messages 
+            $reponses = $reponseRepo->findBy(['destinataire' => $user]); // liste des reponses
+            $expediteur = null;
+
+
+            //Pour chaque MESSAGE je dois récuperer les données qui concernent l'expediteur
             for ($m = 0; $m < count($messages); $m++) {
-                $mess = $messages[$m];
-                dump($mess); // me renvoit la liste des messages un par un
+                $messuser = $messages[$m]->getUserExpediteur();
+                $messrecruter = $messages[$m]->getRecruterExpediteur();
+
+                //si le destinataire est un recruter
+                $destirecruter = $messages[$m]->getRecruterDestinataire();
 
 
+                //si le message reçu est envoyé par un user
+                if ($messuser != null) {
+                    $messuserid  = $messuser->getId();
+                    $expediteur = $messageRepo->findBy(['userExpediteur' => $messuserid]);
+                    // return $expediteur;
+                }
+                // sinon si le message reçu est envoyé par un recruteur
+                elseif ($messrecruter != null) {
+                    $messrecruterid =  $messrecruter->getId();
+                    $expediteur = $messageRepo->findBy(['recruterExpediteur' => $messrecruterid]);
+                    // return $expediteur;
+                }
+            }
+
+            //Pour chaque REPONSE je dois récuperer les données qui concernent l'expediteur
+            for ($r = 0; $r < count($reponses); $r++) {
+                $reponseuser = $reponses[$m]->getExpediteur();
+                // $reponserecruter = $reponses[$m]->getRecruterExpediteur();
+                dump($reponseuser);
+                //si le destinataire est un recruter
+                $reponserecruter = $reponses[$m]->getExpediteur();
+                dump($reponserecruter);
+
+                //si le message reçu est envoyé par un user
+                if ($reponseuser != null) {
+                    $reponseuserid  = $reponseuser->getId();
+                    $expediteur = $reponseRepo->findBy(['expediteur' => $reponseuserid]);
+                    // return $expediteur;
+                }
+                // sinon si le message reçu est envoyé par un recruteur
+                elseif ($reponserecruter != null) {
+                    $reponserecruterid =  $reponserecruter->getId();
+                    $expediteur = $reponseRepo->findBy(['recruterExpediteur' => $reponserecruterid]);
+                    // return $expediteur;
+                }
             }
 
 
 
-
-            $expediteurId = $mess->getUserExpediteur()->getId(); // ca me donne bien l'id de l'expediteur
-
-
-            $expediteur = $useRepo->findBy(['id' => $expediteurId]); // me renvoit bien l'objet expediteur au complet
-            //dd($expediteur); // la j'ai qu'un expediteur
-
-
-
-            // dump($expediteur);
             return $this->render('message/index.html.twig', [
                 'messages' => $messages,
-                'expediteurs' => $expediteur
-            ]);
-        } elseif ($role[0] == "ROLE_RECRUTER") {
-            $messages = $messageRepository->findBy(["recruterDestinataire" => $user]); // liste des messages envoyés par un recruter
-
-
-            //Pour chaque message je dois récuperer les données qui concernent l'expediteur
-            for ($m = 0; $m < count($messages); $m++) {
-                $mess = $messages[$m];
-                dump($mess); // me renvoit la liste des messages un par un
-
-
-            }
-            $expediteurId = $mess->getUserExpediteur()->getId(); // ca me donne bien l'id de l'expediteur
-
-
-            $expediteur = $useRepo->findBy(['id' => $expediteurId]); // me renvoit bien l'objet expediteur au complet
-            return $this->render('message/index.html.twig', [
-
-                'messages' => $messages, // la j'ai bien les messages des recruteurs
-                'expediteurs' => $expediteur
+                'expediteurs' => $expediteur,
+                'reponses' => $reponses
             ]);
         }
     }
@@ -163,28 +174,23 @@ class MessageController extends AbstractController
     /**
      * @Route("/reponse/{id}", name="message_reponse", methods={"GET","POST"})
      */
-    public function reponse($id, Request $request, UserRepository $destiUser, RecruterRepository $destiRecruter): Response
+    public function reponse($id, Request $request, UserRepository $destiUser, RecruterRepository $destiRecruter, MessageRepository $messageRepo): Response
     {
 
         $dest = intval($id); // me revoit l'id en int et pas en string
         $test = $destiUser->findOneBy(['id' => $dest]);
-        dump($test);
+        dump($dest); // me donne l'id du message il me faut l'id de l'expediteur
 
 
-        $essai = $destiRecruter->findOneBy(['id' => $dest]);
-        dump($essai);
+        $messageid = $messageRepo->findBy(['id' => $dest]);
 
-        $roleDestinataire = $essai ? $essai->getRoles() : $test->getRoles();
+        dump($messageid);
 
-
-
-        dump($roleDestinataire);
-
+        $trucuser = $messageid[0]->getUserExpediteur();
+        $trucrecruter = $messageid[0]->getRecruterExpediteur();
 
 
         $exp = $this->getUser();
-
-        $role = $exp->getRoles();
 
 
         $reponse = new Reponse();
@@ -199,10 +205,14 @@ class MessageController extends AbstractController
 
             $reponse->setExpediteur($exp);
 
-            if ($roleDestinataire[0] == "ROLES_RECRUTER") {
-                $reponse->setDestinataireRecruter($essai);
-            } else {
-                $reponse->setDestinataire($test);
+            if ($trucrecruter != null) {
+                $recruterid = $trucrecruter->getId();
+                $aquienvoyerrecruter = $destiRecruter->findBy(['id' => $recruterid]);
+                $reponse->setDestinataireRecruter($aquienvoyerrecruter[0]);
+            } elseif ($trucuser != null) {
+                $userid = $trucuser->getId();
+                $aquienvoyeruser = $destiUser->findBy(['id' => $userid]);
+                $reponse->setDestinataire($aquienvoyeruser[0]);
             }
             $reponse->setPostedAt(new \DateTime());
             $entityManager = $this->getDoctrine()->getManager();

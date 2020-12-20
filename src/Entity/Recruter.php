@@ -342,34 +342,7 @@ class Recruter implements UserInterface
     /**
      * @return Collection|Message[]
      */
-    /*
-    public function getMessagesRecruter(): Collection
-    {
-        return $this->messages_recruter;
-    }
 
-    public function addMessagesRecruter(Message $messagesRecruter): self
-    {
-        if (!$this->messages_recruter->contains($messagesRecruter)) {
-            $this->messages_recruter[] = $messagesRecruter;
-            $messagesRecruter->setRecruterDestinataire($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessagesRecruter(Message $messagesRecruter): self
-    {
-        if ($this->messages_recruter->removeElement($messagesRecruter)) {
-            // set the owning side to null (unless already changed)
-            if ($messagesRecruter->getRecruterDestinataire() === $this) {
-                $messagesRecruter->setRecruterDestinataire(null);
-            }
-        }
-
-        return $this;
-    }
-    */
 
     /**
      * Get the value of messages_recruter
@@ -409,5 +382,10 @@ class Recruter implements UserInterface
         $this->messages_user = $messages_user;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getSlug();
     }
 }
