@@ -22,6 +22,12 @@ class Reponse
      */
     private $expediteur;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Recruter", cascade = {"persist"})
+     */
+    private $expediteur_recruter;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", cascade={"persist"})
      */
@@ -122,6 +128,26 @@ class Reponse
     public function setDestinataireRecruter($destinataire_recruter)
     {
         $this->destinataire_recruter = $destinataire_recruter;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of expediteur_recruter
+     */
+    public function getExpediteur_recruter()
+    {
+        return $this->expediteur_recruter;
+    }
+
+    /**
+     * Set the value of expediteur_recruter
+     *
+     * @return  self
+     */
+    public function setExpediteur_recruter($expediteur_recruter)
+    {
+        $this->expediteur_recruter = $expediteur_recruter;
 
         return $this;
     }

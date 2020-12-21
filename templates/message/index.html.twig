@@ -5,78 +5,99 @@
 
 {% block body %}
 
+	<div class="row">
+		<div class="col">
 
-	<h1 class="text-center mt-5">Vos messages
-		{{ app.user.firstName | capitalize }}</h1>
+			<h1 class="text-center mt-5">Vos messages
+				{{ app.user.firstName | capitalize }}</h1>
 
 
-	{% for message in messages %}
+			{% if messages is empty %}
+				<p class="text-center mt-5">Vous n'avez pas de messages</p>
+			{% endif %}
 
-		<table class="table mt-5">
-			<tbody>
-				<tr>
-					<th>Expéditeur</th>
+			{% for message in messages %}
 
-					{% if message.userExpediteur %}
-						<td>{{ message.userExpediteur.firstName | capitalize}}
-							{{ message.userExpediteur.lastName | capitalize}}</td>
-					{% else %}
-						<td>{{ message.recruterExpediteur.firstName | capitalize}}
-							{{ message.recruterExpediteur.lastName | capitalize}}</td>
-					{% endif %}
-				</tr>
-				<tr>
-					<th>Titre</th>
-					<td>{{ message.titre | capitalize }}</td>
-				</tr>
-				<tr>
-					<th>Message</th>
-					<td>{{ message.message | capitalize }}</td>
-				</tr>
-				<tr>
-					<th>Reçu le</th>
-					<td>{{ message.postedAt ? message.postedAt|date('Y-m-d H:i:s') : '' }}</td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="text-center">
-			<a href="{{ path('message_reponse', {'id': message.id}) }}">
-				<button class="btn btn-success btn-sm text">Répondre</button>
-			</a>
+
+				<table class="table mt-5">
+					<tbody>
+						<tr>
+							<th>Expéditeur</th>
+
+							{% if message.userExpediteur %}
+								<td>{{ message.userExpediteur.firstName | capitalize}}
+									{{ message.userExpediteur.lastName | capitalize}}</td>
+							{% else %}
+								<td>{{ message.recruterExpediteur.firstName | capitalize}}
+									{{ message.recruterExpediteur.lastName | capitalize}}</td>
+							{% endif %}
+						</tr>
+						<tr>
+							<th>Titre</th>
+							<td>{{ message.titre | capitalize }}</td>
+						</tr>
+						<tr>
+							<th>Message</th>
+							<td>{{ message.message | capitalize }}</td>
+						</tr>
+						<tr>
+							<th>Reçu le</th>
+							<td>{{ message.postedAt ? message.postedAt|date('Y-m-d H:i:s') : '' }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="text-center">
+					<a href="{{ path('message_reponse', {'id': message.id}) }}">
+						<button class="btn btn-success btn-sm text">Répondre</button>
+					</a>
+				</div>
+				<hr>
+			{% endfor %}
 		</div>
-		<hr>
-	{% endfor %}
+		<div class="col">
 
-	{% for reponse in reponses %}
+			<h1 class="text-center mt-5">Vos réponses</h1>
 
-		<table class="table mt-5">
-			<tbody>
-				<tr>
-					<th>Expéditeur</th>
+			{% if reponses is empty %}
+				<p class="text-center mt-5">Vous n'avez pas de réponses</p>
+			{% endif %}
 
-					{% if reponse.expediteur %}
-						<td>{{ reponse.expediteur.firstName | capitalize}}
-							{{ reponse.expediteur.lastName | capitalize}}</td>
-					{% else %}
-						<td>{{ reponse.recruterExpediteur.firstName | capitalize}}
-							{{ reponse.recruterExpediteur.lastName | capitalize}}</td>
-					{% endif %}
-				</tr>
-				<tr>
-					<th>Message</th>
-					<td>{{ reponse.message | capitalize }}</td>
-				</tr>
-				<tr>
-					<th>Reçu le</th>
-					<td>{{ reponse.postedAt ? reponse.postedAt|date('Y-m-d H:i:s') : '' }}</td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="text-center">
-			<a href="{{ path('message_reponse', {'id': reponse.id}) }}">
-				<button class="btn btn-success btn-sm text">Répondre</button>
-			</a>
+			{% for reponse in reponses %}
+
+				<table class="table mt-5">
+					<tbody>
+						<tr>
+							<th>Expéditeur</th>
+
+							{% if reponse.expediteur %}
+								<td>{{ reponse.expediteur.firstName | capitalize}}
+									{{ reponse.expediteur.lastName | capitalize}}</td>
+							{% else %}
+								<td>{{ reponse.expediteur_recruter.firstName | capitalize}}
+									{{ reponse.expediteur_recruter.lastName | capitalize}}</td>
+							{% endif %}
+						</tr>
+						<tr>
+							<th>Message</th>
+							<td>{{ reponse.message | capitalize }}</td>
+						</tr>
+						<tr>
+							<th>Reçu le</th>
+							<td>{{ reponse.postedAt ? reponse.postedAt|date('Y-m-d H:i:s') : '' }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="text-center">
+					<a href="{{ path('reponse_reponse', {'id': reponse.id}) }}">
+						<button class="btn btn-success btn-sm text">Répondre</button>
+					</a>
+				</div>
+				<hr>
+			{% endfor %}
 		</div>
-		<hr>
-	{% endfor %}
+
+
+	</div>
+
+
 {% endblock %}
