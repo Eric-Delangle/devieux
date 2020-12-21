@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-	<a class="nav-link navbar-brand" href="https://127.0.0.1:8000">Accueil</a>
+	<a class="nav-link navbar-brand" id="accueil" href="https://127.0.0.1:8000">Accueil</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -11,25 +11,33 @@
 
 				</a>
 			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Les technologies</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'javascript' }) }}">Javascript</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'php' }) }}">Php</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'python' }) }}">Python</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'ruby' }) }}">Ruby</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'java' }) }}">Java</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'c#' }) }}">C#</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'c et c++' }) }}">C et C++</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'lua' }) }}">Lua</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'swift' }) }}">Swift</a>
+				</li>
 
-			<li class="nav-item">
-				<a class="nav-link" href="{{ path('category_index', {'slug': 'javascript' }) }}">Développeurs(euses) Javascript</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{ path('category_index', {'slug': 'php' }) }}">Développeurs(euses) PHP</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{ path('category_index', {'slug': 'python' }) }}">Développeurs(euses) Python</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{ path('category_index', {'slug': 'ruby' }) }}">Développeurs(euses) Ruby</a>
-			</li>
+
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Les frameworks</a>
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'react' }) }}">React</a>
 					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'symfony' }) }}">Symfony</a>
 					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'laravel' }) }}">Laravel</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'codeigniter' }) }}">CodeIgniter
+					</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'cake php' }) }}">CakePHP</a>
+					<a class="dropdown-item" href="{{ path('category_index', {'slug': 'zend framework' }) }}">Zend Framework
+					</a>
 				</li>
 			</li>
 		</ul>

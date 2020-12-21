@@ -31,7 +31,11 @@ class AppFixtures extends Fixture
         $users = [];
 
 
-        $cat = ['Javascript', 'PHP', 'Python', 'Ruby', 'Css', 'HTML', 'Jquery', 'React', 'Symfony', 'Laravel'];
+        $cat = [
+            'Javascript', 'PHP', 'Python', 'Ruby', 'Css', 'HTML', 'Jquery',
+            'React', 'Symfony', 'Laravel', 'Swift', 'Java', 'C et C++', 'C#', 'Lua',
+            'CodeIgniter', 'Zend Framework', 'Cake PHP'
+        ];
         foreach ($cat as $name) {
             $category = new Category();
             $category->setName($name);
