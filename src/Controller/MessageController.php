@@ -162,10 +162,8 @@ class MessageController extends AbstractController
      */
     public function new(Request $request, User $user, UserRepository $userRepo, RecruterRepository $recrutRepo): Response
     {
-        // $dest = $user->getId();// la si un user a le meme id qu'un recruter c'est le bordel
 
-
-        $dest = $user->getSlug(); // je vais tenter avec le slug
+        $dest = $user->getSlug();
 
         $exp = $this->getUser();
 

@@ -5,11 +5,11 @@
 
 {% block body %}
 
-	<div class="row">
-		<div class="col">
+	<div class="row mt-3">
+		<div class="col fond_message mt-3">
 
-			<h1 class="text-center mt-5">Vos messages
-				{{ app.user.firstName | capitalize }}</h1>
+			<h3 class="text-center mt-5">Vos messages
+				{{ app.user.firstName | capitalize }}</h3>
 
 
 			{% if messages is empty %}
@@ -50,13 +50,14 @@
 					<a href="{{ path('message_reponse', {'id': message.id}) }}">
 						<button class="btn btn-success btn-sm text">Répondre</button>
 					</a>
+					{{ include('message/_delete_form.html.twig') }}
 				</div>
 				<hr>
 			{% endfor %}
 		</div>
-		<div class="col">
+		<div class="col fond_reponse mt-3 ml-4">
 
-			<h1 class="text-center mt-5">Vos réponses</h1>
+			<h3 class="text-center mt-5">Vos réponses</h3>
 
 			{% if reponses is empty %}
 				<p class="text-center mt-5">Vous n'avez pas de réponses</p>
@@ -91,6 +92,7 @@
 					<a href="{{ path('reponse_reponse', {'id': reponse.id}) }}">
 						<button class="btn btn-success btn-sm text">Répondre</button>
 					</a>
+					{{ include('reponse/_delete_form.html.twig') }}
 				</div>
 				<hr>
 			{% endfor %}

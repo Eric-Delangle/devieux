@@ -11,5 +11,7 @@
 
 	{{ include('message/_form.html.twig') }}
 
-	<a href="{{ path('message_index') }}">back to list</a>
+	<a href="{{ path('message_index') }}">
+		<button class="btn btn-primary btn-sm mt-3">Retour à vos messages</button>
+	</a>
 {% endblock %}

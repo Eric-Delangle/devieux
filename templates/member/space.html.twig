@@ -9,12 +9,12 @@
 
 {% block body %}
 
-	<h2 class="mt-3 text-center">
+	<h2 class="mt-5 text-center">
 		Bienvenue dans votre espace
 		{{ app.user.firstName | capitalize}}
 		{{ app.user.lastName | capitalize }}
 	</h2>
-	<div class="text-center mt-3">
+	<div class="text-center mt-5">
 		<img class="imageRond" src="{{ vich_uploader_asset(app.user, 'avatarFile') | imagine_filter ('thumb') }}"/>
 
 	</div>

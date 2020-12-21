@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Reponse{% endblock %}
+{% block title %}New Reponse
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Reponse</h1>
+	<h1>Create new Reponse</h1>
 
-    {{ include('reponse/_form.html.twig') }}
+	{{ include('reponse/_form.html.twig') }}
 
-    <a href="{{ path('reponse_index') }}">back to list</a>
+	<a href="{{ path('reponse_index') }}">Retour à vos messages</a>
 {% endblock %}

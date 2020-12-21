@@ -1,3 +1,28 @@
+body {
+  background-color: #2a2a3b !important;
+}
+
+.orange {
+  color: rgb(250, 129, 48);
+}
+
+/* ombre navbar */
+.navbar {
+  box-shadow: 5px 5px 5px 5px #181822;
+}
+
+/* Style du jumbotron de l'accueil */
+.jumbotron {
+  margin-top: 150px;
+  box-shadow: 5px 5px 5px 5px #181822;
+}
+
+.fond_presentation-accueil {
+  background-color: #2a9fd6 !important;
+  color: #ffffff;
+  border-radius: 20px !important;
+}
+
 /* Couleur des liens de la navbar */
 .nav-link {
   color: #ffffff !important;
@@ -32,6 +57,7 @@
 
 .imageRond {
   border-radius: 50%;
+  box-shadow: 5px 5px #181822;
 }
 
 /* forme ronde pour l'affichage des avatars des listes des utilisateurs selon la catégorie*/
@@ -59,4 +85,20 @@
 
 .choix:hover {
   color: #2a9fd6 !important;
+}
+
+/* Style du tableau des messages */
+
+.fond_message {
+  background-color: #1c443f;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px 5px #181822;
+}
+
+/* Style du tableau des réponses */
+
+.fond_reponse {
+  background-color: #ca804e;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px 5px #181822;
 }

@@ -9,5 +9,13 @@
 
 	{{ include('message/_form.html.twig') }}
 
-	<a href="{{ path('message_index') }}">back to list</a>
+
+	<button class="btn btn-primary btn-sm mt-3" onclick="rtn()">Retour à son profil</button>
+
+
+	<script>
+		function rtn() {
+window.history.back();
+}
+	</script>
 {% endblock %}
