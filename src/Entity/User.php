@@ -15,6 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -70,6 +75,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"group1"})
      */
     private $location;
 
@@ -135,7 +141,7 @@ class User implements UserInterface
         $this->roles = ['ROLE_USER'];
 
 
-        $this->messages = new ArrayCollection();
+        // $this->messages = new ArrayCollection();
         $this->messagesRecu_user = new ArrayCollection();
         $this->messagesRecu_recruter = new ArrayCollection();
     }
@@ -366,9 +372,12 @@ class User implements UserInterface
         return (string) $this->getSlug();
     }
 
+
+
     /**
      * @return Collection|Message[]
      */
+    /*
     public function getMessages(): Collection
     {
         return $this->messages;
@@ -395,7 +404,7 @@ class User implements UserInterface
 
         return $this;
     }
-
+*/
     /**
      * @return Collection|Message[]
      */
@@ -431,7 +440,7 @@ class User implements UserInterface
      */
     public function getMessagesRecuRecruter(): Collection
     {
-        return $this->messages_recruter;
+        return $this->messagesRecu_recruter;
     }
 
     public function addMessagesRecuRecruter(Message $messagesRecuRecruter): self
@@ -454,5 +463,25 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(
+
+            $this->location,
+        );
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list(
+
+            $this->location,
+
+
+        ) = unserialize($serialized);
     }
 }

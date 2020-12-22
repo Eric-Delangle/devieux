@@ -14,83 +14,97 @@
 			{{ item.lastName | capitalize }}
 		</h2>
 
-		<p class="text-center mt-5"><img class="imageRond" src="{{ vich_uploader_asset(item, 'avatarFile') | imagine_filter ('thumb') }}"/></p>
-		<p class="text-center mt-5">Ses technologies :
-			{% for categorie in item.categories %}
-				{% if loop.first != true %}
-					,
-				{% endif %}
-				<span class="catColor">
-					{{ categorie.name }}</span>
+
+		<div class="row">
+			<div class="col">
+				<p class="text-center mt-5"><img class="imageRond" src="{{ vich_uploader_asset(item, 'avatarFile') | imagine_filter ('thumb') }}"/></p>
+				<p class="text-center mt-5" style="line-height: 3em; ">Ses technologies :
+					{% for categorie in item.categories %}
+
+						<span class="catColor ml-2">
+							{{ categorie.name }}</span>
+					{% endfor %}
+				</p>
+				<p class="text-center">Il vit à
+					{{ item.location | capitalize }}</p>
+				<p class="text-center" style="line-height: 3em; ">
+					<span class="titreColor">Présentation</span>
+					:
+					{{ item.description }}</p>
+				<p class="text-center">
+					<span class="titreColor">Experience</span>
+					:
+					{{ item.experience }}
+					ans</p>
+
+				<p class="text-center mt-5">
+					<a href="{{ path('message_new', {'id': item.id, 'slug': item.slug}) }}">
+						<button id="contact" type="button" class="btn btn-danger btn-sm">Le contacter</button>
+					</a>
+				</p>
+
+				<p class="text-center mt-5">
+					<button type="button" class="btn btn-primary btn-sm" onclick="rtn()">Retour à la liste</button>
+				</p>
 			{% endfor %}
-		</p>
-		<p class="text-center">Il vit à
-			{{ item.location | capitalize }}</p>
-		<p class="text-center">
-			<span class="titreColor">Présentation</span>
-			:
-			{{ item.description }}</p>
-		<p class="text-center">
-			<span class="titreColor">Experience</span>
-			:
-			{{ item.experience }}
-			ans</p>
-
-		<p class="text-center mt-5">
-			<a href="{{ path('message_new', {'id': item.id, 'slug': item.slug}) }}">
-				<button id="contact" type="button" class="btn btn-danger btn-sm">Le contacter</button>
-			</a>
-		</p>
-
-		<p class="text-center mt-5">
-			<button type="button" class="btn btn-primary btn-sm" onclick="rtn()">Retour à la liste</button>
-		</p>
-	{% endfor %}
 
 
-{% endblock %}
-{% block javascripts %}
+		</div>
+		<div
+			class="col">
 
+			<!-- MAP -->
+			<div id="map" class="mt-5 ml-5"></div>
+		</div>
+		<!-- fin map -->
+	</div>
+</div>{% endblock %}{% block javascripts %}
 
-	{% if app.user %}
-		<script>
-			document.getElementById('inscription').style.display = 'none';
-		</script>
-		<script>
-			document.getElementById('connexion').style.display = 'none';
-		</script>
-		<script>
-			document.getElementById('deconnexion').style.display = 'block';
-		</script>
-		<script>
-			document.getElementById('espace_membre').style.display = 'block';
-		</script>
-		<script>
-			document.getElementById('contact').style.display = 'block';
-		</script>
-	{% else %}
-		<script>
-			document.getElementById('inscription').style.display = 'block';
-		</script>
-		<script>
-			document.getElementById('connexion').style.display = 'block';
-		</script>
-		<script>
-			document.getElementById('deconnexion').style.display = 'none';
-		</script>
-		<script>
-			document.getElementById('espace_membre').style.display = 'none';
-		</script>
-		<script>
-			document.getElementById('contact').style.display = 'none';
-		</script>
-
-	{% endif %}
-
-
-	<script>
-		function rtn() {
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+<script src="{{ asset('js/map.js') }}">
+	document.getElementById('map').style.display = 'block';
+console.log('merde');
+</script>
+<script>
+	let main = new Main();
+</script>
+<script>
+	function rtn() {
 window.history.back();
 }
+</script>
+{% if app.user %}
+	<script>
+		document.getElementById('inscription').style.display = 'none';
 	</script>
-{% endblock %}
+	<script>
+		document.getElementById('connexion').style.display = 'none';
+	</script>
+	<script>
+		document.getElementById('deconnexion').style.display = 'block';
+	</script>
+	<script>
+		document.getElementById('espace_membre').style.display = 'block';
+	</script>
+	<script>
+		document.getElementById('contact').style.display = 'block';
+	</script>
+{% else %}
+	<script>
+		document.getElementById('inscription').style.display = 'block';
+	</script>
+	<script>
+		document.getElementById('connexion').style.display = 'block';
+	</script>
+	<script>
+		document.getElementById('deconnexion').style.display = 'none';
+	</script>
+	<script>
+		document.getElementById('espace_membre').style.display = 'none';
+	</script>
+	<script>
+		document.getElementById('contact').style.display = 'none';
+	</script>
+
+{% endif %}{% endblock %}

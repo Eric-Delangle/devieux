@@ -11,6 +11,22 @@ body {
   box-shadow: 5px 5px 5px 5px #181822;
 }
 
+/* style des divs déroulants contenant les catégories */
+
+.dropdown-menu {
+  background-color: rgb(199, 109, 50) !important;
+  border-radius: 20px !important;
+}
+
+.dropdown-item {
+  border-radius: 20px !important;
+}
+
+.dropdown-item:hover {
+  box-shadow: 2px 2px 2px 2px #181822;
+  font-size: 1.2em;
+}
+
 /* Style du jumbotron de l'accueil */
 .jumbotron {
   margin-top: 150px;
@@ -101,4 +117,13 @@ body {
   background-color: #ca804e;
   border-radius: 20px;
   box-shadow: 5px 5px 5px 5px #181822;
+}
+
+/* la map */
+
+#map {
+  width: 350px;
+  height: 350px;
+  border-radius: 20px;
+  z-index: 9;
 }

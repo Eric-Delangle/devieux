@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class CategoryController extends AbstractController
 {
@@ -49,13 +54,50 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/user/{slug}", name="category_showUser")
      */
-    public function showUser(UserRepository $userRepo, $slug, CategoryRepository $catRepo)
+    public function showUser($slug)
     {
 
-        $category = $catRepo->findOneBy([
+        //je récupere le repository des users et je vais checher ses infos
+        $repositoryCat = $this->getDoctrine()->getRepository(Category::class);
+        $repositoryUser = $this->getDoctrine()->getRepository(User::class);
+
+
+        $category = $repositoryCat->findOneBy([
             'slug' => $slug,
         ]);
-        $user = $userRepo->findBy(['slug' => $slug]);
+        $user = $repositoryUser->findBy(['slug' => $slug]);
+
+
+
+        $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
+
+
+
+        $data = $serializer->serialize(
+            $user,
+            'json',
+            ['attributes' => ['location', 'categories' => ['name']]]
+
+
+        );
+        dump($data);
+
+
+
+        json_encode($data);
+
+        // Nom du fichier à créer
+        $members = 'members.json';
+
+        // Ouverture du fichier
+        $members = fopen($members, 'w+');
+
+        // Ecriture dans le fichier
+        fwrite($members, $data);
+
+
+        // Fermeture du fichier
+        fclose($members);
 
         return $this->render('category/categoryUser.html.twig', [
             'slug' => $slug,

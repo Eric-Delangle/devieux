@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Component\Routing\Annotation\Route;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MemberController extends AbstractController
@@ -48,21 +50,4 @@ class MemberController extends AbstractController
             //  'user' => $user
         ]);
     }
-
-    /**
-     * Affiche un membre en particulier
-     * @Route("/member/{slug}", name="member_show")
-     **/
-    /*
-    public function show($slug)
-    {
-
-        $user =  $this->manager->getRepository(User::class)->findOneBy(['slug' => $slug]);
-
-        return $this->render('member/user.html.twig', [
-            'user' => $user,
-            'slug' => $slug
-        ]);
-    }
-    */
 }
