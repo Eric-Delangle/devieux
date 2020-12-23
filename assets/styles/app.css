@@ -97,6 +97,7 @@ body {
 
 .choix {
   color: #ffffff !important;
+  font-size: 1.5em;
 }
 
 .choix:hover {

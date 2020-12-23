@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Message;
 use App\Entity\Reponse;
-use App\Entity\Recruter;
 use App\Form\MessageType;
 use App\Form\ReponseType;
 use App\Repository\UserRepository;
@@ -15,9 +14,7 @@ use App\Repository\ReponseRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/message")
@@ -47,48 +44,35 @@ class MessageController extends AbstractController
                 $messuser = $messages[$m]->getUserExpediteur();
                 $messrecruter = $messages[$m]->getRecruterExpediteur();
 
-                //si le destinataire est un recruter
-                $destirecruter = $messages[$m]->getRecruterDestinataire();
-
-
                 //si le message reçu est envoyé par un user
                 if ($messuser != null) {
                     $messuserid  = $messuser->getId();
                     $expediteur = $messageRepo->findBy(['userExpediteur' => $messuserid]);
-                    // return $expediteur;
                 }
                 // sinon si le message reçu est envoyé par un recruteur
                 elseif ($messrecruter != null) {
                     $messrecruterid =  $messrecruter->getId();
                     $expediteur = $messageRepo->findBy(['recruterExpediteur' => $messrecruterid]);
-                    // return $expediteur;
                 }
             }
 
             //Pour chaque REPONSE je dois récuperer les données qui concernent l'expediteur
             for ($r = 0; $r < count($reponses); $r++) {
                 $reponseuser = $reponses[$r]->getExpediteur();
-                // $reponserecruter = $reponses[$m]->getRecruterExpediteur();
-                dump($reponseuser);
                 //si le destinataire est un recruter
                 $reponserecruter = $reponses[$r]->getExpediteur();
-                dump($reponserecruter);
 
                 //si le message reçu est envoyé par un user
                 if ($reponseuser != null) {
                     $reponseuserid  = $reponseuser->getId();
                     $expediteur = $reponseRepo->findBy(['expediteur' => $reponseuserid]);
-                    // return $expediteur;
                 }
                 // sinon si le message reçu est envoyé par un recruteur
                 elseif ($reponserecruter != null) {
                     $reponserecruterid =  $reponserecruter->getId();
                     $expediteur = $reponseRepo->findBy(['recruterExpediteur' => $reponserecruterid]);
-                    // return $expediteur;
                 }
             }
-
-
 
             return $this->render('message/index.html.twig', [
                 'messages' => $messages,
@@ -99,7 +83,6 @@ class MessageController extends AbstractController
 
         // La il faut que si le user est un recruter je dois chercher le user dans les recruters
         elseif ($role[0] == "ROLES_RECRUTER") {
-
 
             $messages = $messageRepo->findBy(['recruterDestinataire' => $user]); // liste des messages 
 
@@ -116,36 +99,29 @@ class MessageController extends AbstractController
                 if ($messuser != null) {
                     $messuserid  = $messuser->getId();
                     $expediteur = $messageRepo->findBy(['userExpediteur' => $messuserid]);
-                    // return $expediteur;
                 }
                 // sinon si le message reçu est envoyé par un recruteur
                 elseif ($messrecruter != null) {
                     $messrecruterid =  $messrecruter->getId();
                     $expediteur = $messageRepo->findBy(['recruterExpediteur' => $messrecruterid]);
-                    // return $expediteur;
                 }
             }
 
             //Pour chaque REPONSE je dois récuperer les données qui concernent l'expediteur
             for ($r = 0; $r < count($reponses); $r++) {
                 $reponseuser = $reponses[$r]->getExpediteur();
-                // $reponserecruter = $reponses[$m]->getRecruterExpediteur();
-                dump($reponseuser);
                 //si le destinataire est un recruter
                 $reponserecruter = $reponses[$r]->getExpediteur();
-                dump($reponserecruter);
 
                 //si le message reçu est envoyé par un user
                 if ($reponseuser != null) {
                     $reponseuserid  = $reponseuser->getId();
                     $expediteur = $reponseRepo->findBy(['expediteur' => $reponseuserid]);
-                    // return $expediteur;
                 }
                 // sinon si le message reçu est envoyé par un recruteur
                 elseif ($reponserecruter != null) {
                     $reponserecruterid =  $reponserecruter->getId();
                     $expediteur = $reponseRepo->findBy(['recruterExpediteur' => $reponserecruterid]);
-                    // return $expediteur;
                 }
             }
 
@@ -170,15 +146,9 @@ class MessageController extends AbstractController
         $userDest = $userRepo->findBy(['slug' => $dest]); // je recupere le destinataire user
         $recrutDest = $recrutRepo->findBy(['slug' => $dest]); // je recupere le destinataire recruter
 
-        //dump($userDest, $recrutDest);
-        //dd($exp);
-        // dump($dest); // la je vois son slug
         $role = $exp->getRoles();
-        //dd($role[0]);
-        $roleDestiUser = $userDest[0]->getRoles();
-        //dump($roleDestiUser[0]);
-        //  $roleDestiRecruter = $recrutDest[0]->getRoles();
 
+        $roleDestiUser = $userDest[0]->getRoles();
 
         dump($roleDestiUser[0]); // me renvoit le role de l'user destinataire
 
@@ -193,19 +163,15 @@ class MessageController extends AbstractController
 
             // la je vérifie qui envoie le message , user ou recruter ?
             if ($role[0] == "ROLES_RECRUTER") {
-                //dd("recruter expediteur");
                 $message->setRecruterExpediteur($exp); // si l'expediteur est un recruteur
             } else {
-                // dd("user expediteur");
                 $message->setUserExpediteur($exp); // si l'expediteur est un user
             }
 
             if ($roleDestiUser[0] == "ROLE_USER") {
-                //dd("user desti");
                 $message->setUserDestinataire($userDest[0]); // si le destinataire est un user
 
             } else {
-                // dd("recruter desti");
                 $message->setRecruterDestinataire($recrutDest); // si le destinataire est un recruteur
             }
 
@@ -234,30 +200,20 @@ class MessageController extends AbstractController
     {
 
         $dest = intval($id); // me revoit l'id en int et pas en string
-        $test = $destiUser->findOneBy(['id' => $dest]);
-        dump($dest); // me donne l'id du message il me faut l'id de l'expediteur
-
 
         $messageid = $messageRepo->findBy(['id' => $dest]);
-
-        dump($messageid);
 
         $trucuser = $messageid[0]->getUserExpediteur();
         $trucrecruter = $messageid[0]->getRecruterExpediteur();
 
-
         $exp = $this->getUser();
 
-
         $reponse = new Reponse();
-        //  $slug = $user->getSlug();
 
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
 
             $reponse->setExpediteur($exp);
 
@@ -281,7 +237,6 @@ class MessageController extends AbstractController
         }
 
         return $this->render('message/newReponse.html.twig', [
-            // 'slug' => $slug,
             'message' => $reponse,
             'form' => $form->createView(),
         ]);
@@ -299,7 +254,6 @@ class MessageController extends AbstractController
         $exprecruter = $exp->getRoles();
 
         $reponse = new Reponse();
-        //  $slug = $user->getSlug();
 
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
@@ -324,7 +278,6 @@ class MessageController extends AbstractController
         }
 
         return $this->render('message/newReponse.html.twig', [
-            // 'slug' => $slug,
             'message' => $reponse,
             'form' => $form->createView(),
         ]);

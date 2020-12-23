@@ -24,7 +24,7 @@
 	<p class="text-center mt-5">Vous habitez
 		{{ app.user.location | capitalize }}.
 		<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-			<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+			<button type="button" class="btn btn-primary btn-sm ml-3">Modifier</button>
 		</a>
 	</p>
 	{% if app.user.categories is defined %}
@@ -37,9 +37,9 @@
 					{{ categorie.name }}
 				</span>
 			{% endfor %}
-			.
+
 			<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-				<button type="button" class="btn btn-primary btn-sm">Mettre à jour</button>
+				<button type="button" class="btn btn-primary btn-sm ml-3">Mettre à jour</button>
 			</a>
 		</p>
 
@@ -54,7 +54,7 @@
 			:
 			{{ app.user.description }}
 			<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-				<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+				<button type="button" class="btn btn-primary btn-sm ml-3">Modifier</button>
 			</a>
 		</p>
 	{% endif %}
@@ -66,7 +66,7 @@
 			{{ app.user.experience }}
 			ans
 			<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-				<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+				<button type="button" class="btn btn-primary btn-sm ml-3">Modifier</button>
 			</a>
 		</p>
 	{% endif %}
@@ -78,7 +78,7 @@
 			{{ app.user.company }}
 
 			<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-				<button type="button" class="btn btn-primary btn-sm">Modifier</button>
+				<button type="button" class="btn btn-primary btn-sm ml-3">Modifier</button>
 			</a>
 		</p>
 	{% endif %}

@@ -1,7 +1,4 @@
-
-
-// DEBUT DE MES SCRIPTS
-// dans cet objet j'appele toutes mes classes
+// dans cet objet Main j'appele toutes mes classes
 
 class Main
  {
@@ -11,29 +8,18 @@ class Main
   }
 }
 
-// création de la classe Gmap
 class Gmap 
 { 
-  constructor () {
-   
-   // this.infoMember = document.getElementById('infoMember');
-   // this.nomMembre = document.getElementById('nomMembre');
-   // this.ville = document.getElementById('ville');
-  //  this.categorie = document.getElementById('categorie');
-   // this.message = document.getElementById('message');
-    //this.markers = [];
-  }
-
   // apparition de la map leaflet
     initMap() {
     const lat = 46.413340;
     const long = 1.788320;
     const bounds = [lat, long];
     let mymap;// je crée une variable vide au début
-   console.log(lat)
+
         // cette requete va me permettre de transformer des villes en lat et long
         $(document).ready(function(){ 
-          mymap = L.map('map').setView([lat, long], 5);
+          mymap = L.map('map').setView([lat, long], 9);
           L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoicG9sdnUiLCJhIjoiY2s0c3FmY2FoMTFzMDNlcXVmeXZhdGR1YiJ9.XDjMZFILlUhTvOnBqMAucg', {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
           maxZoom: 5,
@@ -47,13 +33,35 @@ class Gmap
             iconAnchor: [25, 50],
             popupAnchor: [-3, -76],
           });
+// Si je ne mets pas le / devant c'est mort (2 jours de galère)
+  let url = "/members.json";
+ // requete qui permet de récuperer les inos du membre
+ $.ajax({
+  url : url,
+  type : 'GET',
+ 
+  dataType : 'json',
 
-          console.log('haha')
+  success:function(response){
 
-        
-
-
-        })   
-        
-    }// fin initmap     
+    const req = response;
+  
+      let city =req[0]["location"];
+    console.log(city)
+          
+          // api oms
+           $.ajax({
+            url: "https://nominatim.openstreetmap.org/search", // URL de Nominatim
+            type: 'get', // Requête de type GET
+            data: "q="+city+"&format=json&addressdetails=1&limit=1&polygon_svg=1" // Données envoyées (q -> adresse complète, format -> format attendu pour la réponse, limit -> nombre de réponses attendu, polygon_svg -> fournit les données de polygone de la réponse en svg)
+            }).done(function (response) {
+            if(response != ""){
+              let lat = response[0]['lat'];
+              let lon = response[0]['lon'];
+              L.marker([lat, lon], {icon: icone}).addTo(mymap);// creation du marker
+            }});// fin ajax openstreetmap
+        }
+      })
+    })      
+  }// fin initmap     
 }

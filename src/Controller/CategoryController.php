@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Category;
-use App\Repository\UserRepository;
 use App\Repository\CategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,9 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class CategoryController extends AbstractController
@@ -29,11 +26,9 @@ class CategoryController extends AbstractController
             'slug' => $slug,
         ]);
 
-
         if (!$category) {
             throw $this->createNotFoundException("La catégorie demandée n'existe pas");
         }
-
 
         $liste = $category->getUsers();/* ce sont ces elements que je veux paginer */
 
@@ -45,14 +40,13 @@ class CategoryController extends AbstractController
                 $request->query->getInt('page', 1),
                 4
             )
-
-
         ]);
     }
 
 
     /**
      * @Route("/category/user/{slug}", name="category_showUser")
+     * Cette fonction me permet de créer un members.json pour géolocaliser le membre sur son profil
      */
     public function showUser($slug)
     {
@@ -67,22 +61,13 @@ class CategoryController extends AbstractController
         ]);
         $user = $repositoryUser->findBy(['slug' => $slug]);
 
-
-
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-
-
 
         $data = $serializer->serialize(
             $user,
             'json',
             ['attributes' => ['location', 'categories' => ['name']]]
-
-
         );
-        dump($data);
-
-
 
         json_encode($data);
 
@@ -94,7 +79,6 @@ class CategoryController extends AbstractController
 
         // Ecriture dans le fichier
         fwrite($members, $data);
-
 
         // Fermeture du fichier
         fclose($members);
