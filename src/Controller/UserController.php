@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\RecruType;
 use App\Form\User1Type;
-use App\Entity\Category;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserController extends AbstractController
 {
+
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
@@ -65,18 +66,43 @@ class UserController extends AbstractController
     /**
      * @Route("/{slug}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit($slug, Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
+    public function edit($slug, Request $request, UserPasswordEncoderInterface $encoder): Response
     {
-        $form = $this->createForm(User1Type::class, $user);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'Votre profil a bien été mis à jour !');
-            $hash = $encoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($hash);
-            $this->getDoctrine()->getManager()->flush();
+        $user = $this->getUser();
 
-            return $this->redirectToRoute('member_space');
+
+        $role = $user->getRoles();
+
+        // si c'est un user qui edit
+        if ($role[0] == "ROLE_USER") {
+            $form = $this->createForm(User1Type::class, $user);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->addFlash('success', 'Votre profil a bien été mis à jour !');
+                $hash = $encoder->encodePassword($user, $user->getPassword());
+                $user->setPassword($hash);
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('member_space');
+            }
+            //si c'est un recruter qui edit
+        } else {
+
+            $recruter = $this->getUser();
+            $form = $this->createForm(RecruType::class, $recruter);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->addFlash('success', 'Votre profil a bien été mis à jour !');
+                $hash = $encoder->encodePassword($recruter, $recruter->getPassword());
+                $recruter->setPassword($hash);
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('member_space');
+            }
         }
 
         return $this->render('user/edit.html.twig', [
@@ -95,10 +121,12 @@ class UserController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            // dd($user);
+            $user->setMainAvatar("");
             $entityManager->remove($user);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute('home/home.html.twig');
     }
 }

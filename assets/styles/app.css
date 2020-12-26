@@ -3,7 +3,10 @@ body {
 }
 
 .orange {
-  color: rgb(250, 129, 48);
+  width: 10px;
+  height: auto;
+  background-color: rgb(250, 129, 48);
+  color: #ffffff;
 }
 
 /* ombre navbar */

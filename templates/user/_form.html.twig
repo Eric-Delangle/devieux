@@ -1,5 +1,49 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
-{{ form_start(form) }}
-{{ form_widget(form) }}
-<button class="btn btn-primary btn-sm">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+
+{# Affichage du formulaire d'édition pour un utilisateur #}
+{% if user.roles[0]  == "ROLE_USER" %}
+
+	<div class="row">
+		<div class="col">
+			{{ form_start(form, {'attr': {'class': 'placeho'}})}}
+			{{ form_row(form.firstName, {'attr': {'placeholder': "Votre prénom"}})}}
+			{{ form_row(form.lastName, {'attr': {'placeholder': "Votre nom"}})}}
+			{{ form_row(form.location, {'attr': {'placeholder': "Votre ville"}})}}
+			{{ form_row(form.email, {'attr': {'placeholder': "Votre email"}})}}
+			{{ form_row(form.description, {'attr': {'placeholder': "Votre description"}})}}
+
+			{{ form_row(form.password, {'attr': {'placeholder': "Votre mot de passe"}})}}
+			{{ form_row(form.password_verify)}}
+
+
+		</div>
+		<div
+			class="col">
+
+			<!-- form_rest permet d'afficher la liste des catégories -->
+			{{ form_rest(form)}}
+			<button class="btn btn-primary btn-sm">{{ button_label|default('Save') }}</button>
+			{{ form_end(form)}}
+		</div>
+	</div>
+
+	{# Affichage du formulaire d'édition pour un recruteur #}
+{% else %}
+
+	<div class="col">
+		{{ form_start(form, {'attr': {'class': 'placeho'}})}}
+		{{ form_row(form.firstName, {'attr': {'placeholder': "Votre prénom"}})}}
+		{{ form_row(form.lastName, {'attr': {'placeholder': "Votre nom"}})}}
+		{{ form_row(form.location, {'attr': {'placeholder': "Votre ville"}})}}
+		{{ form_row(form.email, {'attr': {'placeholder': "Votre email"}})}}
+		{{ form_row(form.company, {'attr': {'placeholder': "Votre description"}})}}
+
+		{{ form_row(form.password, {'attr': {'placeholder': "Votre mot de passe"}})}}
+		{{ form_row(form.password_verify)}}
+		{{ form_rest(form)}}
+		<button class="btn btn-primary btn-sm">{{ button_label|default('Save') }}</button>
+		{{ form_end(form)}}
+
+	</div>
+
+{% endif %}

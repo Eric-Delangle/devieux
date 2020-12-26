@@ -95,7 +95,8 @@ class User implements UserInterface
     private $experience;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable = true)
+     * @return string|null
      */
     private $mainAvatar;
 
@@ -373,38 +374,6 @@ class User implements UserInterface
     }
 
 
-
-    /**
-     * @return Collection|Message[]
-     */
-    /*
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
-    public function addMessage(Message $message): self
-    {
-        if (!$this->messages->contains($message)) {
-            $this->messages[] = $message;
-            $message->setUserExpediteur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
-            if ($message->getUserExpediteur() === $this) {
-                $message->setUserExpediteur(null);
-            }
-        }
-
-        return $this;
-    }
-*/
     /**
      * @return Collection|Message[]
      */
