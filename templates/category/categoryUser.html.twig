@@ -15,7 +15,7 @@
 		</h2>
 
 
-		<div class="row">
+		<div class="row ipad">
 			<div class="col">
 				<p class="text-center mt-5"><img class="imageRond" src="{{ vich_uploader_asset(item, 'avatarFile') | imagine_filter ('thumb') }}"/></p>
 				<p class="text-center mt-5" style="line-height: 3em; ">Ses technologies :
@@ -27,7 +27,7 @@
 				</p>
 				<p class="text-center">Il vit à
 					{{ item.location | capitalize }}</p>
-				<p class="text-center" style="line-height: 3em; ">
+				<p class="text-center largeur_presentation" style="line-height: 3em; ">
 					<span class="titreColor">Présentation</span>
 					:
 					{{ item.description }}</p>
@@ -39,7 +39,7 @@
 
 				<p class="text-center mt-5">
 					<a href="{{ path('message_new', {'id': item.id, 'slug': item.slug}) }}">
-						<button id="contact" type="button" class="btn btn-danger btn-sm">Le contacter</button>
+						<button id="contact" type="button" class="btn btn-danger btn-sm ipad">Le contacter</button>
 					</a>
 				</p>
 
@@ -51,7 +51,7 @@
 
 		</div>
 		<div
-			class="col">
+			class="col ipad">
 
 			<!-- MAP -->
 			<div id="map" class="mt-5 ml-5"></div>

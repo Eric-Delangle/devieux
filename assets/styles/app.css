@@ -52,6 +52,11 @@ body {
   color: #000000 !important;
 }
 
+/* Taille du texte de la page context */
+.font_concept {
+  font-size: 1.2em;
+}
+
 /* Couleur de fond de la span qui affiche les catégories de l'utilisateur */
 .catColor {
   width: 30px;
@@ -123,6 +128,12 @@ body {
   box-shadow: 5px 5px 5px 5px #181822;
 }
 
+/* taille de la police du badge entreprise */
+
+.badge_entreprise {
+  font-size: 1.2em !important;
+}
+
 /* la map */
 
 #map {
@@ -130,4 +141,72 @@ body {
   height: 350px;
   border-radius: 20px;
   z-index: 9;
+}
+
+/* --  ==== MEDIAQUERIES ====  -- */
+
+@media all and (max-width: 1024px) {
+  /* ipad */
+
+  #accueil {
+    font-size: 1.5em !important;
+  }
+
+  .navbar {
+    font-size: 2em !important;
+  }
+
+  .container {
+    font-size: 2em !important;
+  }
+
+  .ipad {
+    font-size: 2em;
+  }
+
+  .btn {
+    font-size: 1em !important;
+  }
+
+  .largeur_presentation {
+    width: 600px;
+    height: auto;
+    margin: 0 auto;
+    font-size: 1em;
+  }
+
+  #map {
+    margin: 0 auto !important;
+    margin-bottom: 10px;
+  }
+}
+@media all and (max-width: 480px) {
+  /* smartphone */
+
+  /* taille du texte de l'espace membre */
+  .smart {
+    font-size: 2em;
+  }
+
+  #map {
+    width: 600px !important;
+    height: 600px !important;
+  }
+
+  .message_smart input {
+    width: 100%;
+    height: auto;
+  }
+
+  .font_concept {
+    font-size: 2em;
+  }
+
+  .navbar {
+    font-size: 2em;
+  }
+
+  .btn {
+    font-size: 0.5em !important;
+  }
 }

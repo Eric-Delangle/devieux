@@ -4,15 +4,16 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Envoyer un message à
-		{{ slug }}</h1>
-
-	{{ include('message/_form.html.twig') }}
-
-
-	<button class="btn btn-primary btn-sm mt-3" onclick="rtn()">Retour à son profil</button>
+	<h1 class="mt-5">Envoyer un message à
+		{{ user.firstName }}
+		{{ user.lastName }}</h1>
+	<div class="message_smart">
+		{{ include('message/_form.html.twig') }}
 
 
+		<button class="btn btn-primary btn-sm mt-3" onclick="rtn()">Retour à son profil</button>
+
+	</div>
 	<script>
 		function rtn() {
 window.history.back();

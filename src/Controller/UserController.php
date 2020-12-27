@@ -117,16 +117,37 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            // dd($user);
-            $user->setMainAvatar("");
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
+        $user = $this->getUser();
 
-        return $this->redirectToRoute('home/home.html.twig');
+        $role = $user->getRoles();
+
+
+        // code original
+        if ($role[0] == "ROLE_USER") {
+            $this->container->get('security.token_storage')->setToken(null);
+            if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+
+                $user->setMainAvatar("");
+                $entityManager->remove($user);
+                $this->addFlash('success', 'Votre compte a bien été supprimé !');
+                $entityManager->flush();
+            }
+        } else {
+
+            $recruter = $this->getUser();
+            $this->container->get('security.token_storage')->setToken(null);
+            if ($this->isCsrfTokenValid('delete' . $recruter->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+
+                $recruter->setMainAvatar("");
+                $entityManager->remove($recruter);
+                $this->addFlash('success', 'Votre compte a bien été supprimé !');
+                $entityManager->flush();
+            }
+        }
+        return $this->redirectToRoute('homepage');
     }
 }

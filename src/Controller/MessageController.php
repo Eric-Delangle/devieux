@@ -141,6 +141,7 @@ class MessageController extends AbstractController
 
         $dest = $user->getSlug();
 
+
         $exp = $this->getUser();
 
         $userDest = $userRepo->findBy(['slug' => $dest]); // je recupere le destinataire user
@@ -186,6 +187,7 @@ class MessageController extends AbstractController
         }
 
         return $this->render('message/new.html.twig', [
+            'user' => $user,
             'slug' => $slug,
             'message' => $message,
             'form' => $form->createView(),

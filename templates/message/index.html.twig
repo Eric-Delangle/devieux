@@ -6,7 +6,7 @@
 {% block body %}
 
 	<div class="row mt-3">
-		<div class="col fond_message mt-3">
+		<div id="user_message" class="col fond_message mt-3">
 
 			<h3 class="text-center mt-5">Vos messages
 				{{ app.user.firstName | capitalize }}</h3>
@@ -29,7 +29,10 @@
 									{{ message.userExpediteur.lastName | capitalize}}</td>
 							{% else %}
 								<td>{{ message.recruterExpediteur.firstName | capitalize}}
-									{{ message.recruterExpediteur.lastName | capitalize}}</td>
+									{{ message.recruterExpediteur.lastName | capitalize}}
+									<span class="badge badge-warning ml-3 badge_entreprise">Entreprise :
+										{{message.recruterExpediteur.company}}</span>
+								</td>
 							{% endif %}
 						</tr>
 						<tr>
@@ -75,7 +78,10 @@
 									{{ reponse.expediteur.lastName | capitalize}}</td>
 							{% else %}
 								<td>{{ reponse.expediteur_recruter.firstName | capitalize}}
-									{{ reponse.expediteur_recruter.lastName | capitalize}}</td>
+									{{ reponse.expediteur_recruter.lastName | capitalize}}
+									<span class="badge badge-success ml-3 badge_entreprise">Entreprise :
+										{{reponse.expediteur_recruter.company}}</span>
+								</td>
 							{% endif %}
 						</tr>
 						<tr>
@@ -101,5 +107,10 @@
 
 	</div>
 
+	{% if app.user.company is defined %}
+		<script>
+			document.getElementById('user_message').style.display = 'none';
+		</script>
 
+	{% endif %}
 {% endblock %}
