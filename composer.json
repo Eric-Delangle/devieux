@@ -76,8 +76,7 @@
             "@auto-scripts"
         ],
         "compile":[
-            "php bin/console doctrine:schema:update --force",
-            "npm run dev"
+            "php bin/console doctrine:schema:update --force"
         ]
     },
     "conflict": {
