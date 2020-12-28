@@ -41,7 +41,7 @@
 				</li>
 			</li>
 		</ul>
-		<ul class="navbar-nav mr-auto">
+		<ul class="navbar-nav liens_insc_conn">
 			<li lass="nav-item">
 				<a class="nav-link" id="inscription" href="{{ path('home_register_choice') }}" tabindex="-1" aria-disabled="true">
 					<i class="fas fa-door-open black"></i>
@@ -58,7 +58,7 @@
 					Déconnexion</a>
 			</li>
 
-			<li class="nav-item">
+			<li class="nav-item" id="space">
 				<a class="nav-link" id="espace_membre" href="{{ path('member_space' ) }}" tabindex="-1" aria-disabled="true">
 					<i class="fas fa-home"></i>
 					Votre espace</a>
@@ -66,9 +66,6 @@
 
 
 		</ul>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="text" placeholder="Trouvez votre bohneur">
-			<button class="btn btn-secondary my-2 my-sm-0" type="submit">Recherche</button>
-		</form>
+
 	</div>
 </nav>

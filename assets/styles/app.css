@@ -14,6 +14,14 @@ body {
   box-shadow: 5px 5px 5px 5px #181822;
 }
 
+/* liens inscription connexion */
+
+.liens_insc_conn {
+  border-radius: 20px;
+
+  background-color: rgb(199, 109, 50);
+}
+
 /* style des divs déroulants contenant les catégories */
 
 .dropdown-menu {
@@ -84,6 +92,11 @@ body {
   box-shadow: 5px 5px #181822;
 }
 
+/* taille police espace perso */
+.espace_perso_taille_police {
+  font-size: 1.2em;
+}
+
 /* forme ronde pour l'affichage des avatars des listes des utilisateurs selon la catégorie*/
 
 .imageRondCat {
@@ -152,8 +165,13 @@ body {
     font-size: 1.5em !important;
   }
 
+  .dropdown-menu {
+    font-size: 1em !important;
+  }
+
   .navbar {
     font-size: 2em !important;
+    width: 100% !important;
   }
 
   .container {
@@ -161,7 +179,7 @@ body {
   }
 
   .ipad {
-    font-size: 2em;
+    font-size: 1em;
   }
 
   .btn {
@@ -180,12 +198,13 @@ body {
     margin-bottom: 10px;
   }
 }
-@media all and (max-width: 480px) {
+
+@media all and (max-width: 500px) {
   /* smartphone */
 
   /* taille du texte de l'espace membre */
   .smart {
-    font-size: 2em;
+    font-size: 2em !important;
   }
 
   #map {

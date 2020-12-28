@@ -33,7 +33,8 @@
 		{{ message }}
 	</div>
 {% endfor %}
-{% block body %}{% endblock %}</div>{% block javascripts %}
+{% block body %}{% endblock %}
+{% include "partials/_footer.html.twig" %}</div>{% block javascripts %}
 
 
 {% if app.user %}

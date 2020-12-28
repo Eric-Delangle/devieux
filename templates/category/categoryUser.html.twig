@@ -8,14 +8,14 @@
 {% block body %}
 
 	{% for item in user %}
-		<h2 class="text-center mt-3">
+		<h2 class="text-center mt-5">
 			Vous visitez le profil de
 			{{ item.firstName | capitalize }}
 			{{ item.lastName | capitalize }}
 		</h2>
 
 
-		<div class="row ipad">
+		<div class="row ipad smart">
 			<div class="col">
 				<p class="text-center mt-5"><img class="imageRond" src="{{ vich_uploader_asset(item, 'avatarFile') | imagine_filter ('thumb') }}"/></p>
 				<p class="text-center mt-5" style="line-height: 3em; ">Ses technologies :

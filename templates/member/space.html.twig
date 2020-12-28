@@ -19,59 +19,64 @@
 		<img class="imageRond" src="{{ vich_uploader_asset(app.user, 'avatarFile') | imagine_filter ('thumb') }}"/>
 	</div>
 
+	<div class="espace_perso_taille_police">
 
-	<p class="text-center mt-5 smart ipad">Vous habitez
-		{{ app.user.location | capitalize }}.
-	</p>
-	{% if app.user.categories is defined %}
-
-		<p class="text-center mt-5 smart ipad" style="line-height: 3em; ">
-			Vous êtes inscrit(e) dans les catégories suivantes :
-			{% for categorie in app.user.categories %}
-
-				<span class="catColor ml-2 smart ipad">
-					{{ categorie.name }}
-				</span>
-			{% endfor %}
+		<p class="text-center mt-5 smart ipad">Vous habitez
+			{{ app.user.location | capitalize }}.
 		</p>
+		{% if app.user.categories is defined %}
+
+			<p class="text-center mt-5 smart ipad" style="line-height: 3em; ">
+				Vous êtes inscrit(e) dans les catégories suivantes :
+				{% for categorie in app.user.categories %}
+
+					<span class="catColor ml-2 smart ipad">
+						{{ categorie.name }}
+					</span>
+				{% endfor %}
+			</p>
 
 
-	{% endif %}
+		{% endif %}
 
 
-	{% if app.user.description is defined %}
+		{% if app.user.description is defined %}
 
-		<p class="text-center mt-5 smart ipad">
-			<span class="titreColor">Votre présentation</span>
-			:
-			{{ app.user.description }}
+			<p class="text-center mt-5 smart ipad">
+				<span class="titreColor">Votre présentation</span>
+				:
+				{{ app.user.description }}
 
-		</p>
-	{% endif %}
+			</p>
+		{% endif %}
 
-	{% if app.user.experience is defined %}
-		<p class="text-center mt-5 smart ipad">
-			<span class="titreColor">Vos années d'experience</span>
-			:
-			{{ app.user.experience }}
-			ans
-		</p>
-	{% endif %}
+		{% if app.user.experience is defined %}
+			<p class="text-center mt-5 smart ipad">
+				<span class="titreColor">Vos années d'experience</span>
+				:
+				{{ app.user.experience }}
+				ans
+			</p>
+		{% endif %}
 
-	{% if app.user.company is defined %}
-		<p class="text-center mt-5 smart ipad">
-			<span class="titreColor">Entreprise</span>
-			:
-			{{ app.user.company }}
+		{% if app.user.company is defined %}
+			<p class="text-center mt-5 smart ipad">
+				<span class="titreColor">Entreprise</span>
+				:
+				{{ app.user.company }}
 
-		</p>
-	{% endif %}
+			</p>
+		{% endif %}
+	</div>
+	<div class="text-center mt-5">
+		<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
+			<button type="button" class="btn btn-primary ml-5">Modifier votre profil</button>
+		</a>
 
-	<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-		<button type="button" class="btn btn-primary ml-3">Modifier votre profil</button>
-	</a>
-
-	<a href="{{ path('message_index', {'id': app.user.id}) }}" class="btn btn-info">
-		Messagerie</a>
-
+		<a href="{{ path('message_index', {'id': app.user.id}) }}" class="btn btn-info">
+			Messagerie</a>
+	</div>
+	<script>
+		document.getElementById('space').style.display = 'none';
+	</script>
 {% endblock %}
