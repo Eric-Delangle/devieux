@@ -99,6 +99,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.1"
+    },
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },
@@ -141,9 +144,6 @@
     },
     "nikic/php-parser": {
         "version": "v4.10.3"
-    },
-    "ocramius/proxy-manager": {
-        "version": "2.10.0"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -515,8 +515,5 @@
         "files": [
             "./config/packages/vich_uploader.yaml"
         ]
-    },
-    "webimpress/safe-writer": {
-        "version": "2.1.0"
     }
 }
