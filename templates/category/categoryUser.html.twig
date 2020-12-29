@@ -17,11 +17,12 @@
 
 		<div class="row ipad smart">
 			<div class="col">
-				<p class="text-center mt-5">
-					<img
-					class="imageRond" src="http://devieux.herokuapp.com/images/avatarDefaut.jpg"/>
+				<p
+					class="text-center mt-5">
+					{#<img
+										class="imageRond" src="http://devieux.herokuapp.com/images/avatarDefaut.jpg"/>#}
 
-				{#<img class="imageRond" src="{{ vich_uploader_asset(item, 'avatarFile') | imagine_filter ('thumb') }}"/>#}
+					<img class="imageRond" src="{{ vich_uploader_asset(item, 'avatarFile') | imagine_filter ('thumb') }}"/>
 
 				</p>
 				<p class="text-center mt-5" style="line-height: 3em; ">Ses technologies :

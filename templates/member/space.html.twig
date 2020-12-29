@@ -15,10 +15,11 @@
 		{{ app.user.firstName | capitalize}}
 		{{ app.user.lastName | capitalize }}
 	</h2>
-	<div class="text-center mt-5">
-		<img
-		class="imageRond" src="http://devieux.herokuapp.com/images/avatarDefaut.jpg"/>
-	{#<img class="imageRond" src="{{ vich_uploader_asset(app.user, 'avatarFile') | imagine_filter ('thumb') }}"/>#}
+	<div
+		class="text-center mt-5">
+		{#<img
+						class="imageRond" src="http://devieux.herokuapp.com/images/avatarDefaut.jpg"/>#}
+		<img class="imageRond" src="{{ vich_uploader_asset(app.user, 'avatarFile') | imagine_filter ('thumb') }}"/>
 	</div>
 
 	<div class="espace_perso_taille_police">
