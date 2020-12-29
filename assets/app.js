@@ -11,3 +11,8 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 
+
+
+
+     cloudinary.v2.uploader.upload("/images/avatarDefaut.jpg ", 
+     function(error, result) {console.log(result, error)});

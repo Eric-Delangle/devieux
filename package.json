@@ -5,10 +5,13 @@
         "core-js": "^3.0.0",
         "stimulus": "^2.0.0",
         "regenerator-runtime": "^0.13.2",
-        "webpack-notifier": "^1.6.0"
+        "webpack-notifier": "^1.6.0",
+        "cloudinary": "",
+        "fs": "0.0.1-security"
     },
     "dependencies": {
-        "cloudinary": ""
+        "cloudinary": "",
+        "fs": "0.0.1-security"
     },
     "license": "UNLICENSED",
     "private": true,
