@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Entity\Media;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -22,17 +23,17 @@ class UserType extends AbstractType
             ->add('lastName')
             ->add('location')
             ->add('description')
+            ->add('formation')
+            ->add('loisirs')
             ->add('experience')
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => 'true',
-                'expanded' => true
+                'expanded' => true,
+                'label_attr' => ['class' => 'checkbox-inline']
             ])
-            ->add('avatarFile', VichFileType::class, [
-                'required' => false,
-                'label' => 'Votre avatar',
-            ])
+
             ->add('password', PasswordType::class, [
                 'attr' => [
                     'required' => false,

@@ -10,76 +10,72 @@
 
 {% block body %}
 
-	<h2 class="mt-5 text-center">
-		Bienvenue dans votre espace
-		{{ app.user.firstName | capitalize}}
-		{{ app.user.lastName | capitalize }}
-	</h2>
-	<div
-		class="text-center mt-5">
-		{#<img
-						class="imageRond" src="http://devieux.herokuapp.com/images/avatarDefaut.jpg"/>#}
-		<img class="imageRond" src="{{ vich_uploader_asset(app.user, 'avatarFile') | imagine_filter ('thumb') }}"/>
+<h2 class="mt-5 text-center">
+	Bienvenue dans votre espace
+
+	{{ app.user.firstName | capitalize}}
+	{{ app.user.lastName | capitalize }}
+</h2>
+{% if media %}
+	{% for item in media %}
+		<div class="text-center mt-5">
+			<img class="imageRondProfil" src="{{ vich_uploader_asset(item) | imagine_filter ('thumb') }}"/>
+		{% endfor %}
 	</div>
-
-	<div class="espace_perso_taille_police">
-
-		<p class="text-center mt-5 smart ipad">Vous habitez
-			{{ app.user.location | capitalize }}.
-		</p>
-		{% if app.user.categories is defined %}
-
-			<p class="text-center mt-5 smart ipad" style="line-height: 3em; ">
-				Vous êtes inscrit(e) dans les catégories suivantes :
-				{% for categorie in app.user.categories %}
-
-					<span class="catColor ml-2 smart ipad">
-						{{ categorie.name }}
-					</span>
-				{% endfor %}
-			</p>
-
-
-		{% endif %}
-
-
-		{% if app.user.description is defined %}
-
-			<p class="text-center mt-5 smart ipad">
-				<span class="titreColor">Votre présentation</span>
-				:
-				{{ app.user.description }}
-
-			</p>
-		{% endif %}
-
-		{% if app.user.experience is defined %}
-			<p class="text-center mt-5 smart ipad">
-				<span class="titreColor">Vos années d'experience</span>
-				:
-				{{ app.user.experience }}
-				ans
-			</p>
-		{% endif %}
-
-		{% if app.user.company is defined %}
-			<p class="text-center mt-5 smart ipad">
-				<span class="titreColor">Entreprise</span>
-				:
-				{{ app.user.company }}
-
-			</p>
-		{% endif %}
-	</div>
+{% else %}
 	<div class="text-center mt-5">
-		<a href="{{ path('user_edit', {'slug': app.user.slug }) }}">
-			<button type="button" class="btn btn-primary ml-5">Modifier votre profil</button>
-		</a>
+		<img class="imageRondProfil" src="https://127.0.0.1:8000//images/avatarDefaut.jpg"/>
 
-		<a href="{{ path('message_index', {'id': app.user.id}) }}" class="btn btn-info">
-			Messagerie</a>
 	</div>
-	<script>
-		document.getElementById('space').style.display = 'none';
-	</script>
-{% endblock %}
+{% endif %}
+
+
+<div class="espace_perso_taille_police">
+
+	<p class="text-center mt-5 smart ipad">Vous habitez
+		{{ app.user.location | capitalize }}.
+	</p>
+	{% if app.user.categories is defined %}
+
+		<p class="text-center mt-5 smart ipad" style="line-height: 3em; ">
+			Vous êtes inscrit(e) dans les catégories suivantes :
+			{% for categorie in app.user.categories %}
+
+				<span class="catColor ml-2 smart ipad">
+					{{ categorie.name }}
+				</span>
+			{% endfor %}
+		</p>
+
+
+	{% endif %}
+
+
+	{% if app.user.description is defined %}
+
+		<p class="text-center mt-5 smart ipad">
+			<span class="titreColor">Votre présentation</span>
+		</p>
+		<p class="fond text-center">{{ app.user.description }}</p>
+
+	</p>
+{% endif %}
+
+{% if app.user.formation is defined %}
+
+	<p class="text-center mt-5 smart ipad">
+		<span class="titreColor">Votre formation</span>
+	</p>
+	<p class="fond text-center">{{ app.user.formation }}</p>
+
+</p>{% endif %}{% if app.user.loisirs is defined %}
+
+<p class="text-center mt-5 smart ipad">
+	<span class="titreColor">Vos loisirs</span>
+</p>
+<p class="fond text-center">{{ app.user.loisirs }}</p></p>{% endif %}{% if app.user.experience is defined %}<p class="text-center mt-5 smart ipad">
+<span class="titreColor">Vos années d'experience</span></p><p class="fond text-center">{{ app.user.experience }}
+{% if app.user.experience > 1 %}ans
+{% else %}
+	an
+{% endif %}</p></p>{% endif %}{% if app.user.company is defined %}<p class="text-center mt-5 smart ipad"><span class="titreColor">Entreprise</span></p><p class="fond text-center">{{ app.user.company }}</p></p>{% endif %}</div><div class="text-center mt-5"><a href="{{ path('user_edit', {'slug': app.user.slug }) }}"><button type="button" class="btn btn-primary ml-5">Modifier votre profil</button></a><a href="{{ path('message_index', {'id': app.user.id}) }}" class="btn btn-info">Messagerie</a></div><script>document.getElementById('space').style.display = 'none';</script>{% endblock %}

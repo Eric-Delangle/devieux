@@ -28,9 +28,18 @@
 					<td>{{ item.lastName | capitalize}}</td>
 					<td>{{ item.location | capitalize }}</td>
 					<td>
-						{#<img
-												class="imageRond" style="width:70px; height:auto;" src="http://devieux.herokuapp.com/images/avatarDefaut.jpg"/>#}
-						<img class="imageRondCat" src="{{ vich_uploader_asset(item, 'avatarFile') | imagine_filter ('thumb') }}"/>
+						{% if item.media %}
+							{% for item in item.media %}
+
+								<img class="imageRond" src="{{ vich_uploader_asset(item) | imagine_filter ('thumb') }}"/>
+
+							{% else %}
+
+								<img class="imageRond" src="https://127.0.0.1:8000//images/avatarDefaut.jpg"/>
+
+
+							{% endfor %}
+						{% endif %}
 					</td>
 					<td>
 						<a href="{{ path('category_showUser', {'slug': item.slug}) }}">

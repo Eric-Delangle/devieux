@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Media;
+use App\Form\MediaType;
 use App\Form\RecruType;
 use App\Form\User1Type;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -34,8 +37,23 @@ class UserController extends AbstractController
     public function new(Request $request): Response
     {
         $user = new User();
+        $media = new Media();
         $form = $this->createForm(User1Type::class, $user);
+        $formavatar = $this->createForm(MediaType::class, $media);
+
+
+
+
+
+
+
         $form->handleRequest($request);
+        $formavatar->handleRequest($request);
+
+
+
+
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -45,7 +63,8 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_index');
         }
 
-        return $this->render('user/new.html.twig', [
+
+        return $this->render('security/registration.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);

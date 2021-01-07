@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Media;
 use App\Form\UserType;
 use App\Form\LoginType;
+use App\Form\MediaType;
 use App\Form\RecruType;
 use App\Entity\Category;
 use App\Entity\Recruter;
@@ -16,10 +18,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use App\Form\RegisterForm;
 
 class SecurityController extends AbstractController
 {
@@ -29,8 +33,12 @@ class SecurityController extends AbstractController
     public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
         $user = new User();
+        $media = new Media();
         $slugify = new Slugify();
-        $form = $this->createForm(UserType::class, $user);
+
+
+        $form = $this->createForm(RegisterForm::class, ['user' => $user, 'imageFile' => $media]);
+
         $form->handleRequest($request);
 
         /* captcha */
@@ -44,21 +52,34 @@ class SecurityController extends AbstractController
        */
         if ($form->isSubmitted() && $form->isValid()) {
 
+
+            $uploadedFile = $form['media']->getData();
+
+            $manager->persist($uploadedFile);
+            $manager->flush();
+
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
             $slug = $slugify->slugify($user->getFirstName() . ' ' . $user->getLastName());
             $user->setSlug($slug);
             $user->getCategories(new Category());
             $user->setRegisteredAt(new \DateTime());
+
+            $user->addMedium($uploadedFile);
+
             $manager->persist($user);
+
+
             $manager->flush();
             $this->addFlash('success', 'Votre compte a bien été créé');
             return $this->redirectToRoute('security_login');
         }
-        // }
+
+
 
         return $this->render('security/registration.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+
         ]);
     }
 

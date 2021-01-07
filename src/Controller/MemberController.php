@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Media;
 use App\Repository\UserRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\Routing\Annotation\Route;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MemberController extends AbstractController
@@ -44,10 +45,13 @@ class MemberController extends AbstractController
     public function space()
     {
 
-        // $user = $this->manager->getRepository(User::class)->findOneBy(['slug' => $slug]);
+        $user = $this->getUser();
+
+        $media = $this->manager->getRepository(Media::class)->findBy(['user' => $user]);
 
         return $this->render('member/space.html.twig', [
-            //  'user' => $user
+            'media' => $media
+
         ]);
     }
 }

@@ -29,10 +29,11 @@
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>{% endblock %}</head><body>{% include "partials/_navbar.html.twig" %}<div class="container">
 
 {% for message in app.flashes('success') %}
-	<div class="alert alert-success">
+	<div class="alert alert-success text-center">
 		{{ message }}
 	</div>
 {% endfor %}
+
 {% block body %}{% endblock %}
 {% include "partials/_footer.html.twig" %}</div>{% block javascripts %}
 

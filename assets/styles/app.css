@@ -88,7 +88,14 @@ body {
 /* forme ronde pour l'affichage des avatars des espaces membre*/
 
 .imageRond {
+  width: 50px;
   border-radius: 50%;
+  box-shadow: 5px 5px #181822;
+}
+
+.imageRondProfil {
+  width: 200px;
+  border-radius: 50% !important;
   box-shadow: 5px 5px #181822;
 }
 
@@ -154,6 +161,31 @@ body {
   height: 350px;
   border-radius: 20px;
   z-index: 9;
+}
+
+/* fond des divs de presentation */
+
+.fond {
+  background-color: #2a9fd6;
+  border-bottom: 100px solid transparent;
+  border-top: 50px solid transparent;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-radius: 20px;
+  height: auto;
+  width: auto;
+  color: #ffffff;
+
+  /* border-radius: 20px;
+  color: #ffffff;
+  padding: 5px 5px;
+  */
+}
+
+/* forme des boutons */
+
+.btn {
+  border-radius: 20px !important;
 }
 
 /* --  ==== MEDIAQUERIES ====  -- */

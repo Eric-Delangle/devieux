@@ -142,56 +142,75 @@ class MessageController extends AbstractController
         $dest = $user->getSlug();
 
 
+
         $exp = $this->getUser();
+
+
 
         $userDest = $userRepo->findBy(['slug' => $dest]); // je recupere le destinataire user
         $recrutDest = $recrutRepo->findBy(['slug' => $dest]); // je recupere le destinataire recruter
 
-        $role = $exp->getRoles();
 
-        $roleDestiUser = $userDest[0]->getRoles();
+        // récupération de l'id du destinataire pour la comparer a l'id de l'expediteur
+        $destId = $user->getId(); // me donne l'id du destinataire
 
-        dump($roleDestiUser[0]); // me renvoit le role de l'user destinataire
+        $expId = $this->getUser()->getId();
 
-        $message = new Message();
-        $slug = $user->getSlug();
+        $expRole = $exp->getRoles();
 
-        $form = $this->createForm(MessageType::class, $message);
-        $form->handleRequest($request);
+        $destRole = $user->getRoles();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($expId != $destId || $expRole[0] != $destRole[0]) {
+
+            $role = $exp->getRoles();
+
+            $roleDestiUser = $userDest[0]->getRoles();
+
+            dump($roleDestiUser[0]); // me renvoit le role de l'user destinataire
+
+            $message = new Message();
+            $slug = $user->getSlug();
+
+            $form = $this->createForm(MessageType::class, $message);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
 
 
-            // la je vérifie qui envoie le message , user ou recruter ?
-            if ($role[0] == "ROLES_RECRUTER") {
-                $message->setRecruterExpediteur($exp); // si l'expediteur est un recruteur
-            } else {
-                $message->setUserExpediteur($exp); // si l'expediteur est un user
+                // la je vérifie qui envoie le message , user ou recruter ?
+                if ($role[0] == "ROLES_RECRUTER") {
+                    $message->setRecruterExpediteur($exp); // si l'expediteur est un recruteur
+                } else {
+                    $message->setUserExpediteur($exp); // si l'expediteur est un user
+                }
+
+                if ($roleDestiUser[0] == "ROLE_USER") {
+                    $message->setUserDestinataire($userDest[0]); // si le destinataire est un user
+
+                } else {
+                    $message->setRecruterDestinataire($recrutDest); // si le destinataire est un recruteur
+                }
+
+                $message->setPostedAt(new \DateTime());
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($message);
+
+
+                $entityManager->flush();
+                $this->addFlash('success', 'Votre message a bien été envoyé !');
+                return $this->redirectToRoute('member_space');
             }
 
-            if ($roleDestiUser[0] == "ROLE_USER") {
-                $message->setUserDestinataire($userDest[0]); // si le destinataire est un user
-
-            } else {
-                $message->setRecruterDestinataire($recrutDest); // si le destinataire est un recruteur
-            }
-
-            $message->setPostedAt(new \DateTime());
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($message);
-
-
-            $entityManager->flush();
-            $this->addFlash('success', 'Votre message a bien été envoyé !');
+            return $this->render('message/new.html.twig', [
+                'user' => $user,
+                'slug' => $slug,
+                'message' => $message,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $this->addFlash('success', 'Vous ne pouvez pas vous auto-envoyer de message !');
             return $this->redirectToRoute('member_space');
         }
-
-        return $this->render('message/new.html.twig', [
-            'user' => $user,
-            'slug' => $slug,
-            'message' => $message,
-            'form' => $form->createView(),
-        ]);
     }
 
 

@@ -3,30 +3,33 @@
 namespace App\Entity;
 
 
+use App\Entity\Media;
 use DateTimeInterface;
 use App\Entity\Recruter;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @Vich\Uploadable()
  * @UniqueEntity(fields="email")
+ * @Vich\Uploadable
  */
-class User implements UserInterface
+class User implements
+    UserInterface
 {
     /**
      * @ORM\Id
@@ -95,25 +98,6 @@ class User implements UserInterface
     private $experience;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable = true)
-     * @return string|null
-     */
-    private $mainAvatar;
-
-    /**
-     * @Vich\UploadableField(mapping="user_images", fileNameProperty="mainAvatar")
-     * @Assert\File(
-     * maxSize="1000k",
-     * maxSizeMessage="Le fichier excède 1000Ko.",
-     * mimeTypes={"image/jpeg", "image/jpg", "image/gif"},
-     * mimeTypesMessage= "formats autorisés: png, jpeg, jpg, gif"
-     * )
-     * @var File|null
-     */
-    private $avatarFile;
-
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $registeredAt;
@@ -135,6 +119,23 @@ class User implements UserInterface
      */
     private $messages_user;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $formation;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $loisirs;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="user", cascade = {"persist"})
+     */
+    private $media;
+
+
+
 
     public function __construct()
     {
@@ -145,6 +146,7 @@ class User implements UserInterface
         // $this->messages = new ArrayCollection();
         $this->messagesRecu_user = new ArrayCollection();
         $this->messagesRecu_recruter = new ArrayCollection();
+        $this->media = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -333,28 +335,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getAvatarFile(): ?File
-    {
-
-        return $this->avatarFile;
-    }
-
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $AvatarFile
-     *  @return User
-     */
-    public function setAvatarFile(?File $avatarFile): User
-    {
-        $this->avatarFile = $avatarFile;
-        if ($this->avatarFile instanceof UploadedFile) {
-            $this->updated_at = new \DateTime('now');
-        }
-
-        return $this;
-    }
 
     public function getRegisteredAt(): ?\DateTimeInterface
     {
@@ -440,6 +420,7 @@ class User implements UserInterface
         return serialize(
 
             $this->location,
+
         );
     }
 
@@ -451,6 +432,61 @@ class User implements UserInterface
             $this->location,
 
 
+
         ) = unserialize($serialized);
+    }
+
+    public function getFormation(): ?string
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(string $formation): self
+    {
+        $this->formation = $formation;
+
+        return $this;
+    }
+
+    public function getLoisirs(): ?string
+    {
+        return $this->loisirs;
+    }
+
+    public function setLoisirs(string $loisirs): self
+    {
+        $this->loisirs = $loisirs;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedium(Media $medium): self
+    {
+        if (!$this->media->contains($medium)) {
+            $this->media[] = $medium;
+            $medium->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedium(Media $medium): self
+    {
+        if ($this->media->removeElement($medium)) {
+            // set the owning side to null (unless already changed)
+            if ($medium->getUser() === $this) {
+                $medium->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

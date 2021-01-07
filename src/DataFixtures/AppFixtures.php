@@ -32,9 +32,9 @@ class AppFixtures extends Fixture
 
 
         $cat = [
-            'Javascript', 'PHP', 'Python', 'Ruby', 'Css', 'HTML', 'Jquery',
+            'Javascript', 'PHP', 'Python', 'Ruby on rails', 'Css', 'HTML', 'Jquery',
             'React', 'Symfony', 'Laravel', 'Swift', 'Java', 'C et C++', 'C#', 'Lua',
-            'CodeIgniter', 'Zend Framework', 'Cake PHP'
+            'CodeIgniter', 'Zend Framework', 'Cake PHP', 'Angular', 'Vue', 'Ember', 'Backbone', 'Django', 'Express', 'Spring'
         ];
         foreach ($cat as $name) {
             $category = new Category();
@@ -60,6 +60,8 @@ class AppFixtures extends Fixture
             $user->setPassword($hash);
             $user->setRoles(["ROLE_USER"]);
             $user->setDescription($faker->paragraph());
+            $user->setFormation($faker->paragraph());
+            $user->setLoisirs($faker->paragraph());
             $user->setExperience(mt_rand(1, 5));
             $user->setMainAvatar('avatarDefaut.jpg'); // la je donne le nom de l'avatar
             $user->setAvatarFile(new File('public/images/avatarDefaut.jpg')); // la son fichier
