@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use App\Entity\Media;
+use App\Form\MediaType;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class User1Type extends AbstractType
+class UserEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -25,11 +26,6 @@ class User1Type extends AbstractType
             ->add('formation')
             ->add('loisirs')
             ->add('experience')
-            ->add('avatarFile', EntityType::class, [
-                'class' => Media::class,
-                'required' => false,
-                'label' => 'Votre avatar',
-            ])
             ->add('password', PasswordType::class, [
                 'attr' => [
                     'required' => false,
@@ -42,13 +38,16 @@ class User1Type extends AbstractType
 
                 ]
             ])
+
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => 'true',
-                'expanded' => true
+                'expanded' => true,
+                'label_attr' => ['class' => 'checkbox-inline']
             ]);
     }
+
 
     public function configureOptions(OptionsResolver $resolver)
     {

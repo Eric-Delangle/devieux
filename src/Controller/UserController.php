@@ -6,12 +6,12 @@ use App\Entity\User;
 use App\Entity\Media;
 use App\Form\MediaType;
 use App\Form\RecruType;
-use App\Form\User1Type;
+use App\Form\UserEditType;
 use App\Repository\UserRepository;
+use App\Repository\MediaRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -42,18 +42,8 @@ class UserController extends AbstractController
         $formavatar = $this->createForm(MediaType::class, $media);
 
 
-
-
-
-
-
         $form->handleRequest($request);
         $formavatar->handleRequest($request);
-
-
-
-
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -62,7 +52,6 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('user_index');
         }
-
 
         return $this->render('security/registration.html.twig', [
             'user' => $user,
@@ -85,8 +74,12 @@ class UserController extends AbstractController
     /**
      * @Route("/{slug}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit($slug, Request $request, UserPasswordEncoderInterface $encoder): Response
+    public function edit($slug, Request $request, UserPasswordEncoderInterface $encoder, MediaRepository $mediaRepo): Response
     {
+
+        $media = $mediaRepo->findBy(['user' => $this->getUser()]);
+        // dd($media);
+
 
         $user = $this->getUser();
 
@@ -95,8 +88,8 @@ class UserController extends AbstractController
 
         // si c'est un user qui edit
         if ($role[0] == "ROLE_USER") {
-            $form = $this->createForm(User1Type::class, $user);
-
+            $form = $this->createForm(UserEditType::class, $user);
+            // dd($form);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -127,11 +120,10 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'slug' => $slug,
             'user' => $user,
+            'media' => $media,
             'form' => $form->createView(),
         ]);
     }
-
-
 
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
@@ -142,8 +134,6 @@ class UserController extends AbstractController
 
         $role = $user->getRoles();
 
-
-        // code original
         if ($role[0] == "ROLE_USER") {
             $this->container->get('security.token_storage')->setToken(null);
             if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {

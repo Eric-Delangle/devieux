@@ -54,6 +54,11 @@ class Media
     private $user;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Recruter::class, inversedBy="media", cascade = {"persist"})
+     */
+    private $recruter;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updated_at;
@@ -138,5 +143,25 @@ class Media
     public function __toString()
     {
         return (string) $this->getImageName();
+    }
+
+    /**
+     * Get the value of recruter
+     */
+    public function getRecruter()
+    {
+        return $this->recruter;
+    }
+
+    /**
+     * Set the value of recruter
+     *
+     * @return  self
+     */
+    public function setRecruter($recruter)
+    {
+        $this->recruter = $recruter;
+
+        return $this;
     }
 }

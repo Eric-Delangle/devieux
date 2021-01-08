@@ -16,19 +16,21 @@
 	{{ app.user.firstName | capitalize}}
 	{{ app.user.lastName | capitalize }}
 </h2>
-{% if media %}
+{% if media is defined %}
 	{% for item in media %}
+
 		<div class="text-center mt-5">
 			<img class="imageRondProfil" src="{{ vich_uploader_asset(item) | imagine_filter ('thumb') }}"/>
-		{% endfor %}
-	</div>
-{% else %}
-	<div class="text-center mt-5">
-		<img class="imageRondProfil" src="https://127.0.0.1:8000//images/avatarDefaut.jpg"/>
 
-	</div>
+		</div>
+	{% else %}
+		<div class="text-center mt-5">
+			<img class="imageRondProfil" src="https://127.0.0.1:8000//images/avatarDefaut.jpg"/>
+
+		</div>
+
+	{% endfor %}
 {% endif %}
-
 
 <div class="espace_perso_taille_police">
 

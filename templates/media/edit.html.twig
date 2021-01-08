@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avatar
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-center mt-5">Changer votre avatar</h1>
+
+	{{ include('media/_form.html.twig') }}
+
+
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		document.getElementById('media_edit_imageFile_delete').style.display = 'none';
+document.getElementById('inscription').style.display = 'none';
+document.getElementById('connexion').style.display = 'none';
+	</script>
+{% endblock %}

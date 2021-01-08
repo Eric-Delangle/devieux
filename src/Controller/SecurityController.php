@@ -4,26 +4,19 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Media;
-use App\Form\UserType;
 use App\Form\LoginType;
-use App\Form\MediaType;
 use App\Form\RecruType;
 use App\Entity\Category;
 use App\Entity\Recruter;
-use ReCaptcha\ReCaptcha;
+use App\Form\RegisterForm;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use App\Form\RegisterForm;
+
 
 class SecurityController extends AbstractController
 {
@@ -52,12 +45,11 @@ class SecurityController extends AbstractController
        */
         if ($form->isSubmitted() && $form->isValid()) {
 
-
+            // Si je ne fait pas ça l'avatar n'est pas uploadé
             $uploadedFile = $form['media']->getData();
-
             $manager->persist($uploadedFile);
             $manager->flush();
-
+            // Suite du formulaire de création de compte 
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
             $slug = $slugify->slugify($user->getFirstName() . ' ' . $user->getLastName());
@@ -90,6 +82,7 @@ class SecurityController extends AbstractController
     public function registrationRec(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
         $recruter = new Recruter();
+        $media = new Media();
         $slugify = new Slugify();
         $form = $this->createForm(RecruType::class, $recruter);
         $form->handleRequest($request);

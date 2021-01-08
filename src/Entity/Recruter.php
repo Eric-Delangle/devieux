@@ -73,22 +73,6 @@ class Recruter implements UserInterface
      */
     private $slug;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mainAvatar;
-
-    /**
-     * @Vich\UploadableField(mapping="user_images", fileNameProperty="mainAvatar")
-     * @Assert\File(
-     * maxSize="1000k",
-     * maxSizeMessage="Le fichier excède 1000Ko.",
-     * mimeTypes={"image/jpeg", "image/jpg", "image/gif"},
-     * mimeTypesMessage= "formats autorisés: png, jpeg, jpg, gif"
-     * )
-     * @var File|null
-     */
-    private $avatarFile;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -116,11 +100,17 @@ class Recruter implements UserInterface
      */
     private $messages_user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="recruter", cascade = {"persist"})
+     */
+    private $media;
+
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
         $this->messages_recruter = new ArrayCollection();
+        $this->media = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -249,40 +239,6 @@ class Recruter implements UserInterface
         return $this;
     }
 
-    public function getMainAvatar(): ?string
-    {
-        return $this->mainAvatar;
-    }
-
-    public function setMainAvatar(string $mainAvatar): self
-    {
-        $this->mainAvatar = $mainAvatar;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getAvatarFile(): ?File
-    {
-
-        return $this->avatarFile;
-    }
-
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $AvatarFile
-     *  @return User
-     */
-    public function setAvatarFile(?File $avatarFile)
-    {
-        $this->avatarFile = $avatarFile;
-        if ($this->avatarFile instanceof UploadedFile) {
-            $this->updated_at = new \DateTime('now');
-        }
-
-        return $this;
-    }
 
     public function getRegisteredAt(): ?\DateTimeInterface
     {
@@ -387,5 +343,35 @@ class Recruter implements UserInterface
     public function __toString()
     {
         return (string) $this->getSlug();
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedium(Media $medium): self
+    {
+        if (!$this->media->contains($medium)) {
+            $this->media[] = $medium;
+            $medium->setRecruter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedium(Media $medium): self
+    {
+        if ($this->media->removeElement($medium)) {
+            // set the owning side to null (unless already changed)
+            if ($medium->getRecruter() === $this) {
+                $medium->setRecruter(null);
+            }
+        }
+
+        return $this;
     }
 }

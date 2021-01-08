@@ -30,10 +30,7 @@ class RecruType extends AbstractType
 
                 ]
             ])
-            ->add('avatarFile', VichFileType::class, [
-                'required' => false,
-                'label' => 'Votre avatar',
-            ])
+
             ->add('location');
     }
 

@@ -5,9 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Media;
 use App\Repository\UserRepository;
-
 use Doctrine\ORM\EntityManagerInterface;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -46,12 +44,18 @@ class MemberController extends AbstractController
     {
 
         $user = $this->getUser();
+        $role = $user->getRoles();
 
         $media = $this->manager->getRepository(Media::class)->findBy(['user' => $user]);
 
-        return $this->render('member/space.html.twig', [
-            'media' => $media
+        if ($role[0] == 'ROLES_RECRUTER') {
 
-        ]);
+            return $this->render('member/space.html.twig');
+        } else {
+            return $this->render('member/space.html.twig', [
+                'media' => $media
+
+            ]);
+        }
     }
 }

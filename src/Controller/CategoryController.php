@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Media;
 use App\Entity\Category;
-use App\Repository\UserRepository;
 use App\Repository\MediaRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
