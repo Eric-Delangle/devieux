@@ -30,14 +30,14 @@
 					<td>
 						{% if item.media %}
 							{% for item in item.media %}
+								{% if item.imageName %}
+									<img class="imageRond" src="{{ vich_uploader_asset(item) | imagine_filter ('thumb') }}"/>
 
-								<img class="imageRond" src="{{ vich_uploader_asset(item) | imagine_filter ('thumb') }}"/>
+								{% else %}
 
-							{% else %}
+									<img class="imageRond" src="https://127.0.0.1:8000//images/avatarDefaut.jpg"/>
 
-								<img class="imageRond" src="https://127.0.0.1:8000//images/avatarDefaut.jpg"/>
-
-
+								{% endif %}
 							{% endfor %}
 						{% endif %}
 					</td>

@@ -151,7 +151,6 @@ class UserController extends AbstractController
             if ($this->isCsrfTokenValid('delete' . $recruter->getId(), $request->request->get('_token'))) {
                 $entityManager = $this->getDoctrine()->getManager();
 
-                $recruter->setMainAvatar("");
                 $entityManager->remove($recruter);
                 $this->addFlash('success', 'Votre compte a bien été supprimé !');
                 $entityManager->flush();

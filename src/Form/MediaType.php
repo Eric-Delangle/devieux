@@ -20,7 +20,7 @@ class MediaType extends AbstractType
 
             ->add('imageFile', VichFileType::class, [
                 'required' => false,
-                'label' => 'Votre avatar',
+                'label' => 'Votre avatar (facultatif)',
             ]);
     }
 

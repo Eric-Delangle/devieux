@@ -49,12 +49,14 @@ class Media
     private $imageFile;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="media", cascade = {"persist"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="media", cascade = {"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Recruter::class, inversedBy="media", cascade = {"persist"})
+     * @ORM\ManyToOne(targetEntity=Recruter::class, inversedBy="media", cascade = {"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $recruter;
 

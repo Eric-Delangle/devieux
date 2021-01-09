@@ -10,6 +10,7 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class UserType extends AbstractType
@@ -22,7 +23,9 @@ class UserType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('location')
-            ->add('description')
+            ->add('description', TextType::class, [
+                'label' => 'Votre parcours'
+            ])
             ->add('formation')
             ->add('loisirs')
             ->add('experience')

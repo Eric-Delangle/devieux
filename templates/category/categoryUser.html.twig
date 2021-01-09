@@ -19,15 +19,17 @@
 		<div class="col">
 			{% if item.media %}
 				{% for item in item.media %}
-					<div class="text-center mt-5">
-						<img class="imageRondProfil" src="{{ vich_uploader_asset(item) | imagine_filter ('thumb') }}"/>
+					{% if item.imageName %}
+						<div class="text-center mt-5">
+							<img class="imageRondProfil" src="{{ vich_uploader_asset(item) | imagine_filter ('thumb') }}"/>
 
-					</div>
-				{% else %}
-					<div class="text-center mt-5">
-						<img class="imageRondProfil" src="https://127.0.0.1:8000//images/avatarDefaut.jpg"/>
+						</div>
+					{% else %}
+						<div class="text-center mt-5">
+							<img class="imageRondProfil" src="https://127.0.0.1:8000//images/avatarDefaut.jpg"/>
 
-					</div>
+						</div>
+					{% endif %}
 				{% endfor %}
 			{% endif %}
 			<p class="text-center mt-5" style="line-height: 3em; ">Ses technologies :

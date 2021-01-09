@@ -1,7 +1,12 @@
 <footer class="foot mt-5">
+
+	<div id="cookieMessage">
+		<p>Ce site utilise des cookies</p>
+		<button id="boutonCookie" onclick="cook()" class="btn btn-primary">Ok</button>
+	</div>
 	<div id="mentions" class="text-center">
 		<p class="">
-			<a href="#">Mentions légales</a>
+			<a href="{{ path('home_mentions') }}">Mentions légales</a>
 		</p>
 		<p>
 			<i class="far fa-envelope"></i>
@@ -9,7 +14,19 @@
 				Nous contacter</a>
 		</p>
 		<p>Copyright ©2020
-			<a href="#">devieux</a>
+			<a href="#">codemi.fr</a>
 			tous droits réservés.</p>
 	</div>
 </footer>
+{% block javascripts %}
+	<script>
+		if (sessionStorage.getItem('cookie') != null) {
+document.getElementById('cookieMessage').style.display = "none";
+}
+let cook = () => {
+
+document.getElementById('cookieMessage').style.display = "none";
+sessionStorage.setItem('cookie', 'accepté');
+}
+	</script>
+{% endblock %}

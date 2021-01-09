@@ -2,6 +2,16 @@ body {
   background-color: #2a2a3b !important;
 }
 
+/* Message cookies */
+#cookieMessage {
+  width: 150px;
+  background-color: rgb(199, 109, 50);
+  border-radius: 20px;
+  color: #ffffff;
+  text-align: center;
+  padding: 15px auto;
+}
+
 .orange {
   width: 10px;
   height: auto;

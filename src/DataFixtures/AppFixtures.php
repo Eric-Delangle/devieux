@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use Faker;
 use App\Entity\User;
+use App\Entity\Media;
 use App\Entity\Category;
 use App\Entity\Recruter;
 use Cocur\Slugify\Slugify;
@@ -48,6 +49,9 @@ class AppFixtures extends Fixture
         for ($u = 1; $u <= 15; $u++) {
 
             $user = new User();
+            $media = new Media();
+            $media->setImageFile(new File('public/images/avatarDefaut.jpg'));
+            $media->setImageName('avatarDefaut.jpg');
 
             $hash = $this->encoder->encodePassword($user, "password");
 
@@ -63,8 +67,11 @@ class AppFixtures extends Fixture
             $user->setFormation($faker->paragraph());
             $user->setLoisirs($faker->paragraph());
             $user->setExperience(mt_rand(1, 5));
-            $user->setMainAvatar('avatarDefaut.jpg'); // la je donne le nom de l'avatar
-            $user->setAvatarFile(new File('public/images/avatarDefaut.jpg')); // la son fichier
+            $user->addMedium($media);
+            /*
+            $user->setImageName('avatarDefaut.jpg'); // la je donne le nom de l'avatar
+            $user->setImageFile(new File('public/images/avatarDefaut.jpg')); // la son fichier
+            */
             $user->setRegisteredAt($faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now'));
 
 
@@ -72,7 +79,7 @@ class AppFixtures extends Fixture
                 $user->getCategories($categories)->add($category);
             }
             $users[] = $user;
-            $manager->persist($user);
+            $manager->persist($user, $media);
         };
 
         for ($r = 1; $r <= 15; $r++) {
@@ -90,8 +97,8 @@ class AppFixtures extends Fixture
                 ->setPassword($hash)
                 ->setRoles(["ROLE_RECRUTER"])
                 ->setCompany($faker->company())
-                ->setMainAvatar('avatarDefaut.jpg') // la je donne le nom de l'avatar
-                ->setAvatarFile(new File('public/images/avatarDefaut.jpg')) // la son fichier
+                //  ->setMainAvatar('avatarDefaut.jpg') // la je donne le nom de l'avatar
+                // ->setAvatarFile(new File('public/images/avatarDefaut.jpg')) // la son fichier
                 ->setRegisteredAt($faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now'));
 
 
