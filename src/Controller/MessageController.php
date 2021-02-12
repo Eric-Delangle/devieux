@@ -9,8 +9,8 @@ use App\Form\MessageType;
 use App\Form\ReponseType;
 use App\Repository\UserRepository;
 use App\Repository\MessageRepository;
-use App\Repository\RecruterRepository;
 use App\Repository\ReponseRepository;
+use App\Repository\RecruterRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,10 +32,14 @@ class MessageController extends AbstractController
         $user = $this->getUser();
         $role = $user->getRoles();
 
+
+        $messages = $messageRepo->findBy(['userDestinataire' => $user]); // liste des messages 
+        $reponses = $reponseRepo->findBy(['destinataire' => $user]); // liste des reponses
+
+
         if ($role[0] == "ROLE_USER") {
 
-            $messages = $messageRepo->findBy(['userDestinataire' => $user]); // liste des messages 
-            $reponses = $reponseRepo->findBy(['destinataire' => $user]); // liste des reponses
+
             $expediteur = null;
 
 
@@ -73,6 +77,45 @@ class MessageController extends AbstractController
                     $expediteur = $reponseRepo->findBy(['recruterExpediteur' => $reponserecruterid]);
                 }
             }
+
+
+            $key_password = "lacléquipermetdecrypteretdedecrypter";
+
+
+            // je modifie mon tableau de messages pour afficher les données décryptées 
+            foreach ($messages as $message) {
+                // DECRYPTER
+                $decrypted_titre = openssl_decrypt(
+                    $message->getTitre(),
+                    "AES-128-ECB",
+                    $key_password
+                );
+
+                $message->setTitre($decrypted_titre);
+
+                $decrypted_message = openssl_decrypt(
+                    $message->getMessage(),
+                    "AES-128-ECB",
+                    $key_password
+                );
+
+                $message->setMessage($decrypted_message);
+            }
+
+            // je modifie mon tableau des reponses pour afficher les données décryptées 
+            foreach ($reponses as $reponse) {
+                // DECRYPTER
+                dump($reponse);
+                $decrypted_reponse = openssl_decrypt(
+                    $reponse->getMessage(),
+                    "AES-128-ECB",
+                    $key_password
+                );
+
+                $reponse->setMessage($decrypted_reponse);
+                dump($decrypted_reponse);
+            }
+
 
             return $this->render('message/index.html.twig', [
                 'messages' => $messages,
@@ -125,6 +168,42 @@ class MessageController extends AbstractController
                 }
             }
 
+            $key_password = "lacléquipermetdecrypteretdedecrypter";
+
+            // je modifie mon tableau de messages pour afficher les données décryptées 
+            foreach ($messages as $message) {
+                // DECRYPTER
+                $decrypted_titre = openssl_decrypt(
+                    $message->getTitre(),
+                    "AES-128-ECB",
+                    $key_password
+                );
+
+                $message->setTitre($decrypted_titre);
+
+                $decrypted_message = openssl_decrypt(
+                    $message->getMessage(),
+                    "AES-128-ECB",
+                    $key_password
+                );
+
+                $message->setMessage($decrypted_message);
+            }
+
+            // je modifie mon tableau des reponses pour afficher les données décryptées 
+            foreach ($reponses as $reponse) {
+                // DECRYPTER
+
+                $decrypted_reponse = openssl_decrypt(
+                    $reponse->getMessage(),
+                    "AES-128-ECB",
+                    $key_password
+                );
+
+                $reponse->setMessage($decrypted_reponse);
+            }
+
+
             return $this->render('message/index.html.twig', [
                 'messages' => $messages,
                 'expediteurs' => $expediteur,
@@ -141,10 +220,7 @@ class MessageController extends AbstractController
 
         $dest = $user->getSlug();
 
-
-
         $exp = $this->getUser();
-
 
 
         $userDest = $userRepo->findBy(['slug' => $dest]); // je recupere le destinataire user
@@ -166,9 +242,10 @@ class MessageController extends AbstractController
 
             $roleDestiUser = $userDest[0]->getRoles();
 
-            dump($roleDestiUser[0]); // me renvoit le role de l'user destinataire
+            //  dump($roleDestiUser[0]); // me renvoit le role de l'user destinataire
 
             $message = new Message();
+
             $slug = $user->getSlug();
 
             $form = $this->createForm(MessageType::class, $message);
@@ -196,6 +273,20 @@ class MessageController extends AbstractController
                 $entityManager->persist($message);
 
 
+                $objet = $message->getTitre();
+                $texte = $message->getMessage();
+                $key_password = "lacléquipermetdecrypteretdedecrypter";
+
+                // CRYPTER
+                $encrypted_titre = openssl_encrypt($objet, "AES-128-ECB", $key_password);
+                $encrypted_message = openssl_encrypt($texte, "AES-128-ECB", $key_password);
+                // dd($encrypted_titre, $encrypted_message);
+
+
+
+                $message->setTitre($encrypted_titre);
+                $message->setMessage($encrypted_message);
+                //  dd($message);
                 $entityManager->flush();
                 $this->addFlash('success', 'Votre message a bien été envoyé !');
                 return $this->redirectToRoute('member_space');
@@ -204,7 +295,7 @@ class MessageController extends AbstractController
             return $this->render('message/new.html.twig', [
                 'user' => $user,
                 'slug' => $slug,
-                'message' => $message,
+                'message' =>  $message,
                 'form' => $form->createView(),
             ]);
         } else {
@@ -252,6 +343,14 @@ class MessageController extends AbstractController
             $entityManager->persist($reponse);
 
 
+            $texte = $reponse->getMessage();
+            $key_password = "lacléquipermetdecrypteretdedecrypter";
+
+            // CRYPTER
+            $encrypted_message = openssl_encrypt($texte, "AES-128-ECB", $key_password);
+
+            $reponse->setMessage($encrypted_message);
+
             $entityManager->flush();
             $this->addFlash('success', 'Votre message a bien été envoyé !');
             return $this->redirectToRoute('member_space');
@@ -270,6 +369,9 @@ class MessageController extends AbstractController
     {
         $expediteur = $reponseRepo->findBy(['id' => $id]);
         $expediteuraquirepondre = $expediteur[0]->getExpediteur(); // me donne l'id du gars a qui je dois repondre
+
+        //  $nomdugaraquirepondre = ucfirst($expediteur[0]->getExpediteur()->getFirstName()) . " " . ucfirst($expediteur[0]->getExpediteur()->getLastName());
+
 
         $exp = $this->getUser();
         $exprecruter = $exp->getRoles();
@@ -292,6 +394,13 @@ class MessageController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($reponse);
 
+            $texte = $reponse->getMessage();
+            $key_password = "lacléquipermetdecrypteretdedecrypter";
+
+            // CRYPTER
+            $encrypted_message = openssl_encrypt($texte, "AES-128-ECB", $key_password);
+
+            $reponse->setMessage($encrypted_message);
 
             $entityManager->flush();
             $this->addFlash('success', 'Votre message a bien été envoyé !');
@@ -299,7 +408,7 @@ class MessageController extends AbstractController
         }
 
         return $this->render('message/newReponse.html.twig', [
-            'message' => $reponse,
+            // 'name' => $nomdugaraquirepondre,
             'form' => $form->createView(),
         ]);
     }
@@ -309,7 +418,9 @@ class MessageController extends AbstractController
      */
     public function show(Message $message): Response
     {
+
         return $this->render('message/show.html.twig', [
+
             'message' => $message,
         ]);
     }

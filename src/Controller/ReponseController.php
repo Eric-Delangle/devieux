@@ -18,10 +18,29 @@ class ReponseController extends AbstractController
     /**
      * @Route("/", name="reponse_index", methods={"GET"})
      */
-    public function index(ReponseRepository $reponseRepository): Response
+    public function index(ReponseRepository $reponseRepo): Response
     {
+        /*
+        $user = $this->getUser();
+        $reponses = $reponseRepo->findBy(['destinataire' => $user]); // liste des reponses
+
+        $key_password = "clefquipermetdedechiffrerleschainesdecaracteres";
+
+        foreach ($reponses as $reponse) {
+            // DECRYPTER
+            $decrypted_reponse = openssl_decrypt(
+                $reponse->getMessage(),
+                "AES-128-ECB",
+                $key_password
+            );
+
+            dump($decrypted_reponse);
+        }
+
+
+*/
         return $this->render('reponse/index.html.twig', [
-            'reponses' => $reponseRepository->findAll(),
+            'reponses' => $reponseRepo->findAll(),
         ]);
     }
 

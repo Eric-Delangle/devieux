@@ -5,6 +5,7 @@
 
 {% block body %}
 
+
 	<div class="row mt-3">
 		<div id="user_message" class="col fond_message mt-3">
 
@@ -17,7 +18,6 @@
 			{% endif %}
 
 			{% for message in messages %}
-
 
 				<table class="table mt-5">
 					<tbody>
@@ -37,11 +37,18 @@
 						</tr>
 						<tr>
 							<th>Titre</th>
+
 							<td>{{ message.titre | capitalize }}</td>
+
+
 						</tr>
 						<tr>
 							<th>Message</th>
-							<td>{{ message.message | capitalize }}</td>
+
+							<td>
+								{{ message.message | capitalize }}</td>
+
+
 						</tr>
 						<tr>
 							<th>Reçu le</th>
@@ -86,6 +93,7 @@
 						</tr>
 						<tr>
 							<th>Message</th>
+
 							<td>{{ reponse.message | capitalize }}</td>
 						</tr>
 						<tr>

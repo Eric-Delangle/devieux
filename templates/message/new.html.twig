@@ -5,8 +5,8 @@
 
 {% block body %}
 	<h1 class="mt-5">Envoyer un message à
-		{{ user.firstName }}
-		{{ user.lastName }}</h1>
+		{{ user.firstName | capitalize }}
+		{{ user.lastName | capitalize }}</h1>
 	<div class="message_smart">
 		{{ include('message/_form.html.twig') }}
 

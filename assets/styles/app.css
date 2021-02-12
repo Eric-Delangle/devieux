@@ -5,7 +5,7 @@ body {
 /* Message cookies */
 #cookieMessage {
   width: 150px;
-  background-color: rgb(199, 109, 50);
+  background: linear-gradient(to right, rgb(199, 109, 50), grey) !important;
   border-radius: 20px;
   color: #ffffff;
   text-align: center;
@@ -21,6 +21,7 @@ body {
 
 /* ombre navbar */
 .navbar {
+  background: linear-gradient(to right, grey, #2a9fd6) !important;
   box-shadow: 5px 5px 5px 5px #181822;
 }
 
@@ -35,7 +36,7 @@ body {
 /* style des divs déroulants contenant les catégories */
 
 .dropdown-menu {
-  background-color: rgb(199, 109, 50) !important;
+  background: linear-gradient(to right, rgb(199, 109, 50), grey) !important;
   border-radius: 20px !important;
 }
 
@@ -44,12 +45,13 @@ body {
 }
 
 .dropdown-item:hover {
-  box-shadow: 2px 2px 2px 2px #181822;
   font-size: 1.2em;
+  background: linear-gradient(to right, #2a9fd6, grey) !important;
 }
 
 /* Style du jumbotron de l'accueil */
 .jumbotron {
+  background: linear-gradient(to right, #2a9fd6, grey);
   margin-top: 150px;
   box-shadow: 5px 5px 5px 5px #181822;
 }
@@ -176,22 +178,94 @@ body {
 /* fond des divs de presentation */
 
 .fond {
-  background-color: #2a9fd6;
+  background: linear-gradient(to right, #2a9fd6, grey) !important;
   border-bottom: 100px solid transparent;
   border-top: 50px solid transparent;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
   border-radius: 20px;
   height: auto;
   width: auto;
   color: #ffffff;
-
-  /* border-radius: 20px;
-  color: #ffffff;
-  padding: 5px 5px;
-  */
+  padding: 0 20px;
 }
 
+.triangle {
+  width: 160px;
+  height: 160px;
+  /* position: absolute; */
+  padding-top: 150px;
+  left: 45%;
+  clip: rect(auto, 180px, auto, 100px);
+  transform: rotate(-90deg);
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.triangle::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0%, #2a9fd6),
+    color-stop(100%, grey)
+  );
+  transform: rotate(-45deg);
+}
+
+.triangleInverse {
+  display: inline-block;
+  height: 0;
+  width: 0;
+  border-right: 87px solid transparent;
+  border-top: 150px solid #2a9fd6;
+  border-left: 87px solid transparent;
+  margin: o auto;
+  transform: translateX(155%);
+  line-height: 15;
+  color: white;
+}
+
+.ville {
+  position: absolute;
+  z-index: 9;
+  transform: rotate(90deg);
+  top: 68px;
+  color: white;
+  right: 60px;
+}
+
+.exp {
+  position: absolute;
+  z-index: 9;
+  transform: rotate(90deg);
+  top: 68px;
+  color: white;
+  right: 60px;
+}
+
+.rond {
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: linear-gradient(to right, #2a9fd6, grey) !important;
+  transform: translateX(30%);
+  line-height: 10;
+  color: white;
+  text-overflow: "";
+}
+
+.pPresentation {
+  /* paragraphe presentation (rond) */
+
+  padding: 120px 30px;
+  line-height: 4;
+}
 /* forme des boutons */
 
 .btn {
@@ -238,6 +312,74 @@ body {
   #map {
     margin: 0 auto !important;
     margin-bottom: 10px;
+    transform: translateX(50%);
+  }
+
+  /* paragraphe presentation (rond) */
+  .pPresentationResponsive {
+    padding: 80px 30px;
+    line-height: 1.5;
+  }
+
+  .rond {
+    transform: translateX(27%);
+  }
+
+  .triangle {
+    transform: translateX(148%);
+  }
+
+  .triangleInverse {
+    transform: translateX(148%);
+  }
+
+  .exp {
+    position: absolute;
+    z-index: 9;
+    transform: rotate(90deg);
+    top: -20px;
+    color: white;
+    right: 70px;
+  }
+
+  /* formes géométriques */
+  .ville {
+    position: absolute;
+    z-index: 9;
+    transform: rotate(90deg);
+    top: -20px;
+    color: white;
+    right: 70px;
+  }
+
+  .triangle {
+    width: 160px;
+    height: 160px;
+    /* position: absolute; */
+    padding-top: 150px;
+    left: 45%;
+    clip: rect(auto, 180px, auto, 100px);
+    transform: rotate(-90deg);
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .triangle::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    background: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      color-stop(0%, #2a9fd6),
+      color-stop(100%, grey)
+    );
+    transform: rotate(-45deg);
   }
 }
 
@@ -269,5 +411,15 @@ body {
 
   .btn {
     font-size: 0.5em !important;
+  }
+
+  .triangle {
+    transform: translateX(148%);
+  }
+
+  /* paragraphe presentation (rond) */
+  .pPresentationResponsive {
+    padding: 80px 30px;
+    line-height: 1.5;
   }
 }

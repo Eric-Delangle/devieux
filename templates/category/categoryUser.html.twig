@@ -42,7 +42,12 @@
 			<p class="text-center mt-5">
 				<span class="titreColor">Il vit à</span>
 			</p>
-			<p class="fond text-center">{{ item.location | capitalize }}</p>
+			<div class="triangle">
+				<p class="ville">
+					{{ item.location | capitalize }}
+				</p>
+			</div>
+
 		</p>
 		<p class="text-center largeur_presentation" style="line-height: 3em; ">
 			<span class="titreColor">Présentation</span>
@@ -53,19 +58,24 @@
 	<p class="text-center largeur_presentation" style="line-height: 3em; ">
 		<span class="titreColor">Formation</span>
 	</p>
-	<p class="fond text-center">{{ item.formation }}</p>
+	<div class="rond">
+		<p class="text-center pPresentation pPresentationResponsive">{{ item.formation }}</p>
+
+	</div>
+
 </p>
 
 <p class="text-center largeur_presentation" style="line-height: 3em; ">
 	<span class="titreColor">Loisirs</span>
 </p>
 <p class="fond text-center">{{ item.loisirs }}</p></p><p class="text-center">
-<span class="titreColor">Experience</span></p><p class="fond text-center">{{ item.experience }}
-{% if item.experience > 1 %}ans
-{% else %}
-	an
-{% endif %}</p></p><p class="text-center mt-5"><a href="{{ path('message_new', {'id': item.id, 'slug': item.slug}) }}">
-<button id="contact" type="button" class="btn btn-danger btn-sm ipad">Le contacter</button></a></p><p class="text-center mt-5"><button type="button" class="btn btn-primary btn-sm" onclick="rtn()">Retour à la liste</button></p>{% endfor %}</div><divclass="colipad"><!-- MAP --><div id="map" class="mt-5 ml-5"></div></div><!-- fin map --></div></div>{% endblock %}{% block javascripts %}<!-- Make sure you put this AFTER Leaflet's CSS --><script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script><script src="{{ asset('js/map.js') }}">document.getElementById('map').style.display = 'block';
-console.log('merde');</script><script>let main = new Main();</script><script>function rtn() {
+<span class="titreColor">Experience</span></p><div class="triangle">
+<p class="exp">{{ item.experience }}
+	{% if item.experience > 1 %}ans
+	{% else %}
+		an
+	{% endif %}
+</p></p></div><p class="text-center mt-5"><a href="{{ path('message_new', {'id': item.id, 'slug': item.slug}) }}">
+<button id="contact" type="button" class="btn btn-danger btn-sm ipad">Le contacter</button></a></p><p class="text-center mt-5"><button type="button" class="btn btn-primary btn-sm" onclick="rtn()">Retour à la liste</button></p>{% endfor %}</div><divclass="colipad"><!-- MAP --><div id="map" class="mt-5 ml-5"></div></div><!-- fin map --></div></div>{% endblock %}{% block javascripts %}<!-- Make sure you put this AFTER Leaflet's CSS --><script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script><script src="{{ asset('js/map.js') }}">document.getElementById('map').style.display = 'block';</script><script>let main = new Main();</script><script>function rtn() {
 window.history.back();
 }</script>{% if app.user %}<script>document.getElementById('inscription').style.display = 'none';</script><script>document.getElementById('connexion').style.display = 'none';</script><script>document.getElementById('deconnexion').style.display = 'block';</script><script>document.getElementById('espace_membre').style.display = 'block';</script><script>document.getElementById('contact').style.display = 'block';</script>{% else %}<script>document.getElementById('inscription').style.display = 'block';</script><script>document.getElementById('connexion').style.display = 'block';</script><script>document.getElementById('deconnexion').style.display = 'none';</script><script>document.getElementById('espace_membre').style.display = 'none';</script><script>document.getElementById('contact').style.display = 'none';</script>{% endif %}{% endblock %}
